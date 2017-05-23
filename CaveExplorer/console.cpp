@@ -57,7 +57,7 @@ void initScreen(void)
 
 
 
-	system("Title CaveExplorer2000 by Jan Sudczak"); //ustawianie tytu³u okna
+	system("Title CaveExplorer by Jan Sudczak & Filip Strózik"); //ustawianie tytu³u okna
 
 													 //wy³¹czenie migania kursora
 	CONSOLE_CURSOR_INFO cciInfo;
