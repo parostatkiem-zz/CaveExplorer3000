@@ -1,4 +1,4 @@
-//CAVE EXPLORER 2000
+//CAVE EXPLORER 
 #include "config.h"
 
 unsigned char map[200][200];
@@ -22,7 +22,7 @@ int main()
 
 
 
-	loadGameSaveVariable(1);
+	//loadGameSaveVariable(1);
 
 
 

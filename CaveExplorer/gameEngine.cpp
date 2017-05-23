@@ -217,7 +217,7 @@ void Move()
 
 }
 
-void TryMove(char direction)
+int TryMove(char direction)
 {
 	COORD tmp = player.position;
 	setColor(kolor_gracz);

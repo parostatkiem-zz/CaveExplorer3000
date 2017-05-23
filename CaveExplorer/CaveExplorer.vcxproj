@@ -150,6 +150,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console.cpp" />
+    <ClCompile Include="gameEngine.cpp" />
+    <ClCompile Include="gameSave.cpp" />
+    <ClCompile Include="graphics.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

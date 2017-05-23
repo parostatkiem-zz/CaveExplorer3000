@@ -1,5 +1,6 @@
 #pragma once
 #include "config.h"
+#include "time.h"
 
 
 
@@ -11,7 +12,7 @@ void MoveEnemies();
 void AddCaveSegment(COORD punkt);
 void InitializeLevel(int level);
 void Move();
-void TryMove(char direction);
+int TryMove(char direction);
 void ShowMenu();
 void Atack();
 void Death();
