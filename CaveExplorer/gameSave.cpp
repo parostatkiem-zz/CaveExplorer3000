@@ -1,7 +1,14 @@
 #include "config.h"
 
+
+
+using namespace std;
+
+ofstream file;
+
 FILE *plik;
-char nazwa[150];
+char* nazwa;
+
 unsigned int x = 0, y = 0;
 
 int saveGame()
@@ -9,50 +16,77 @@ int saveGame()
 
 
 
+	
+	char* docdir = getenv("USERPROFILE");
+	if (!docdir)
+		return 0; //nie udalo sie odczytac katalogu dokumenty
+	string path(docdir);
+	path += "\\Documents\\CaveExplorer";
 
-	//snprintf(nazwa, sizeof nazwa, "%s\\%s", getenv("UserProfile"), "Documents\\CaveExplorer2000");
-	//mkdir(nazwa, 0755);
-	//snprintf(nazwa, sizeof nazwa, "%s\\%s", nazwa, "savegame.txt");
-
-
-	//if (!GameSaveLoad) //trzeba sapisac do pliku informacje, ze obsluga zapisu/odczytu jest wylaczona
-	//{
-	//	plik = fopen(nazwa, "r+");
-	//	if (plik == NULL)
-	//		return 0;
-	//	// fprintf(plik, "gaasdas=%d\n", GameSaveLoad);
-	//	fwrite("gameSaveLoad=0\n", 15, 1, plik);
-	//	fclose(plik);
-	//	return 1;
-	//}
+	
 
 
+	string filename = "\\savegame.txt";
+
+	file.open(path + filename);
+	if (!file.is_open())
+	{
+		string tmp = "mkdir "+path;
+		system(tmp.c_str());
+
+		tmp = "del " + path+filename;
+		system(tmp.c_str());
+		file.open(path + filename);
+	}
+
+	if (!file.is_open())
+	{
+		return 0; //nie udalo sie otworzyc pliku nawet po utworzeniu katalogu
+	}
+
+	
+
+	if (!GameSaveLoad) //trzeba sapisac do pliku informacje, ze obsluga zapisu/odczytu jest wylaczona
+	{
+		file<<"gameSaveLoad=0\n";
+		file.close();
+		return 1;
+	}
 
 
-	//plik = fopen(nazwa, "w+");
-	//if (plik == NULL)
-	//	return 0;
-
-	////=========FAKTYCZNY ZAPIS DO PLIKU==============
 
 
-	//fprintf(plik, "gameSaveLoad=%d\n", GameSaveLoad);
-	//fprintf(plik, "map=%s\n", map);
-	//fprintf(plik, "totalTurns=%d\n", TotalTurns);
-	//fprintf(plik, "currentLevel=%d\n", CurrentLevel);
-	//fprintf(plik, "enemiesKilled=%d\n", EnemiesKilled);
-	//fprintf(plik, "player=%d,%d,%d,%d,%d,%d,%d,\n", player.position.X, player.position.Y, player.damage, player.exp, player.hp, player.level, player.maxhp);
-	//fprintf(plik, "enemies=");
-	//for (int x = 0; x < 100; x++)
-	//{
-	//	if (enemies[x].position.X == 0 && enemies[x].position.Y == 0)
-	//		continue; //koniec petli jesli  przeciwnik nie istnieje
+	
 
-	//	fprintf(plik, "%d,%d,%d,%d|", enemies[x].position.X, enemies[x].position.Y, enemies[x].damage, enemies[x].hp);
-	//}
-	//fprintf(plik, "\n");
-	//fprintf(plik, "portal=%d,%d,\n", portal.X, portal.Y);
-	//fclose(plik);
+	//=========FAKTYCZNY ZAPIS DO PLIKU==============
+
+
+	file<<"gameSaveLoad="<< GameSaveLoad<<"\n";
+
+	string tmp;
+	for (int x = 0; x <= MapMaxY; x++)
+				{
+					
+				for (int y = 0; y < MapMaxX; y++)
+					tmp += map[x][y];
+				}
+	file << "map=" << tmp.c_str();
+	file<< "\n";
+	file<<"totalTurns="<< TotalTurns<<"\n";
+	file<<"currentLevel="<< CurrentLevel<<"\n";
+	file<<"enemiesKilled="<< EnemiesKilled<<"\n";
+	file<<"player="<< player.position.X<<","<< player.position.Y << "," << player.damage << "," << player.exp << "," << player.hp << "," << player.level << "," << player.maxhp << "\n";
+	file<<"enemies=";
+	for (int x = 0; x < 100; x++)
+	{
+		if (enemies[x].position.X == 0 && enemies[x].position.Y == 0)
+			continue; //koniec petli jesli  przeciwnik nie istnieje
+
+		file<<enemies[x].position.X<<","<< enemies[x].position.Y << "," << enemies[x].damage << "," << enemies[x].hp;
+	}
+	file<<"\n";
+	file<<"portal="<<portal.X<<","<< portal.Y;
+	file.close();
 	return 1;
 }
 

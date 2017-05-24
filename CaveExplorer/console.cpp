@@ -57,7 +57,7 @@ void initScreen(void)
 
 
 
-	system("Title CaveExplorer by Jan Sudczak & Filip Strózik"); //ustawianie tytu³u okna
+	system("Title CaveExplorer by Jan Sudczak/Filip Strózik"); //ustawianie tytu³u okna
 
 													 //wy³¹czenie migania kursora
 	CONSOLE_CURSOR_INFO cciInfo;
@@ -71,7 +71,7 @@ void initScreen(void)
 	info.dwFontSize.X = 8;
 	info.dwFontSize.Y = 12;
 	info.FontWeight = FW_NORMAL;
-	wcscpy(info.FaceName, L"Terminal");
+	wcscpy_s(info.FaceName, L"Terminal");
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), NULL, &info);
 
 
@@ -116,7 +116,7 @@ void setColor(unsigned short id)
 
 char getKey(void)
 {
-	return getch();
+	return _getch();
 }
 
 void drawMenuItem(int x, int y, unsigned short c, const char *s)
@@ -126,7 +126,7 @@ void drawMenuItem(int x, int y, unsigned short c, const char *s)
 	const char *t = s;
 
 	unsigned int num = 0;
-	int i = 0;
+	unsigned int i = 0;
 	putCharXY(x, y, 0xC9);
 	while (*t)
 	{

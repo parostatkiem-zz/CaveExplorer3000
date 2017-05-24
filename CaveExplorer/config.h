@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
-#include <math.h>
+#include "math.h"
+
+#include <iostream>
+#include <fstream>
+
 
 
 #include "console.h"
