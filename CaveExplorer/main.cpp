@@ -10,10 +10,10 @@ unsigned int EnemiesKilled = 0;
 
 unsigned int GameSaveLoad = 1;
 
-struct playerClass player;
+playerClass player;
 COORD viewport;
 COORD portal;
-struct Enemy enemies[MaxEnemyNum];
+Enemy enemies[MaxEnemyNum] ;
 
 int main()
 {

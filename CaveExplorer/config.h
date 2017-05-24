@@ -88,8 +88,9 @@ extern unsigned int GameSaveLoad;
 
 extern COORD viewport;
 extern COORD portal;
-extern struct playerClass
+class playerClass
 {
+public:
 	int hp;
 	int maxhp;
 	int damage;
@@ -98,13 +99,14 @@ extern struct playerClass
 	int exp;
 
 };
-extern struct playerClass player;
-extern struct Enemy
+extern playerClass player;
+class Enemy
 {
+public:
 	int hp;
 	int damage;
 	COORD position;
-
+	
 };
-extern struct Enemy enemies[];
+extern Enemy enemies[MaxEnemyNum];
 

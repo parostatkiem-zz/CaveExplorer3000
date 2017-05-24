@@ -32,10 +32,10 @@ int saveGame()
 	if (!file.is_open())
 	{
 		string tmp = "mkdir "+path;
-		system(tmp.c_str());
+		system(tmp.c_str()); //tworzenie katalogu, bo nie istnieje
 
 		tmp = "del " + path+filename;
-		system(tmp.c_str());
+		system(tmp.c_str()); //usuwanie starego pliku, bo inaczej ofstream sobie nie radzi³
 		file.open(path + filename);
 	}
 
