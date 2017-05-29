@@ -7,7 +7,7 @@
 
 int isSaved();
 
-int loadGameSaveVariable();
+int loadGameSaveVariable(unsigned int checkForGameSaveVariable);
 
 int saveGame();
 int loadGame();

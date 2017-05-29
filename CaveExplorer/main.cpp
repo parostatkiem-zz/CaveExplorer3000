@@ -22,7 +22,7 @@ int main()
 
 
 
-	//loadGameSaveVariable(1);
+	loadGameSaveVariable(1);
 
 
 
