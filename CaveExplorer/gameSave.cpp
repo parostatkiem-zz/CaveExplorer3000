@@ -97,7 +97,7 @@ int loadGame()
 	if (!docdir)
 		return 0; //nie udalo sie odczytac katalogu dokumenty
 	char *path=docdir;
-	//path += "\\Documents\\CaveExplorer";
+
 
 
 	sprintf(nazwa, "%s\\%s", docdir, "Documents\\CaveExplorer");
@@ -159,12 +159,9 @@ int loadGame()
 
 		if (strcmp(zmienna, "map") == 0)
 		{
-			//unsigned char* test = (unsigned char*)line;
 			for (int x = 0; x <= MapMaxY; x++)
 			{
-			//strcpy(map[x], line);
 			memcpy(map[x], (unsigned char*)line, MapMaxX); // OK
-				//map[x] = line;
 				for (int y = 0; y<MapMaxX; y++)
 					*line++;
 			}
