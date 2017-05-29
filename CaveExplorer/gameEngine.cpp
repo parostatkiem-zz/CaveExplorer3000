@@ -640,7 +640,14 @@ void ShowMenu()
 					//wczytaj gre
 					if (isSaved())
 					{
-						loadGame();
+						if (!loadGame())
+						{
+							system("CLS");
+							drawMenuItem(25, 13, kolor_blok_przeciwnik, "Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"); //error
+							system("pause");
+							system("CLS");
+							break;
+						}
 						GameState = 1;
 						system("CLS");
 						RefreshMap();
