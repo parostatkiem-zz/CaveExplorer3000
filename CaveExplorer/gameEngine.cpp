@@ -176,9 +176,9 @@ void Move()
 	unsigned char znak;
 	do
 	{
-		znak = getKey();
+		znak = console::getKey();
 		if (znak == 0 || znak == 0xE0)
-			znak = getKey();  //'czyszczenie' znaku ze œmieci jeœli jest enterem albo czymœ takim
+			znak = console::getKey();  //'czyszczenie' znaku ze œmieci jeœli jest enterem albo czymœ takim
 
 		if (znak == 72 || znak == 80 || znak == 77 || znak == 75)
 		{
@@ -220,7 +220,7 @@ void Move()
 int TryMove(char direction)
 {
 	COORD tmp = player.position;
-	setColor(kolor_gracz);
+	console::setColor(kolor_gracz);
 	switch (direction)
 	{
 	case 72: //gora
@@ -231,16 +231,16 @@ int TryMove(char direction)
 			if (map[player.position.Y - 1][player.position.X] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_zwykly_ukruszony);
+				console::setColor(kolor_blok_zwykly);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_zwykly_ukruszony);
 				map[player.position.Y - 1][player.position.X] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				//blok juz jest ukruszony, mozna go zniszczyc i sie tam przemiescic LUB pole jest puste
 				player.position.Y--;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_pusty);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_pusty);
 			}
 		}
 		break;
@@ -252,15 +252,15 @@ int TryMove(char direction)
 			if (map[player.position.Y + 1][player.position.X] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_zwykly_ukruszony);
+				console::setColor(kolor_blok_zwykly);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_zwykly_ukruszony);
 				map[player.position.Y + 1][player.position.X] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				player.position.Y++;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_pusty);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_pusty);
 			}
 		}
 		break;
@@ -272,15 +272,15 @@ int TryMove(char direction)
 			if (map[player.position.Y][player.position.X + 1] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
+				console::setColor(kolor_blok_zwykly);
+				console::putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
 				map[player.position.Y][player.position.X + 1] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				player.position.X++;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_pusty);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_pusty);
 			}
 		}
 		break;
@@ -292,15 +292,15 @@ int TryMove(char direction)
 			if (map[player.position.Y][player.position.X - 1] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
+				console::setColor(kolor_blok_zwykly);
+				console::putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
 				map[player.position.Y][player.position.X - 1] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				player.position.X--;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_pusty);
+				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_pusty);
 			}
 
 		}
@@ -309,7 +309,7 @@ int TryMove(char direction)
 
 	map[player.position.Y][player.position.X] = blok_pusty;
 
-	setColor(0x0F);
+	console::setColor(0x0F);
 
 	return 1;
 }
@@ -335,7 +335,7 @@ void MoveEnemies()
 		int tmp = CalculateDistance(enemies[i].position, player.position);
 		if (CalculateDistance(enemies[i].position, player.position) <= SeeDistance) //jesli przeciwnik widzi gracza
 		{
-			setColor(kolor_blok_przeciwnik);
+			console::setColor(kolor_blok_przeciwnik);
 			if (CalculateDistance(enemies[i].position, player.position) <= 1) //przeciwnik stoi kolo gracza
 			{
 				//przeciwnik atakuje
@@ -361,8 +361,8 @@ void MoveEnemies()
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.X--;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
 							map[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
 						}
 						else
@@ -373,8 +373,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
 									map[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
@@ -384,8 +384,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
 									map[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
@@ -397,8 +397,8 @@ void MoveEnemies()
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.X++;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
 							map[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
 						}
 						else
@@ -409,8 +409,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
 									map[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
@@ -420,8 +420,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
 									map[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
@@ -436,8 +436,8 @@ void MoveEnemies()
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.Y--;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
 							map[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
 						}
 						else
@@ -448,8 +448,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
 									map[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
 								}
 
@@ -460,8 +460,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
 									map[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
 								}
 
@@ -474,8 +474,8 @@ void MoveEnemies()
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.Y++;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+							console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
 							map[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
 						}
 						else
@@ -486,8 +486,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
 									map[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
 								}
 
@@ -498,8 +498,8 @@ void MoveEnemies()
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
+									console::putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
 									map[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
 								}
 
@@ -511,7 +511,7 @@ void MoveEnemies()
 			//koniec ruchu
 			map[enemies[i].position.Y][enemies[i].position.X] = blok_przeciwnik;
 
-			setColor(0x0F);
+			console::setColor(0x0F);
 
 		}
 	}
@@ -556,29 +556,29 @@ void ShowMenu()
 
 
 
-		drawMenuItem(17, 7, colors[0], "Rozpocznij NOW¤ gr©");
+		console::drawMenuItem(17, 7, colors[0], "Rozpocznij NOW¤ gr©");
 		if (isSaved() && GameSaveLoad  &&  GameState == 0)
 		{
 
 
-			drawMenuItem(16, 12, colors[1], "Kontynuuj zapisan¥ gr©");
+			console::drawMenuItem(16, 12, colors[1], "Kontynuuj zapisan¥ gr©");
 		}
 		else
 		{
 
 
-			drawMenuItem(22, 12, colors[1], "Kontynuuj");
+			console::drawMenuItem(22, 12, colors[1], "Kontynuuj");
 		}
 
 
 
-		drawMenuItem(24, 17, colors[2], "Opcje");
+		console::drawMenuItem(24, 17, colors[2], "Opcje");
 
-		drawMenuItem(21, 22, colors[3], "Zakoäcz gr©");
+		console::drawMenuItem(21, 22, colors[3], "Zakoäcz gr©");
 
 
 
-		c = getKey();
+		c = console::getKey();
 
 
 		if (c == 72) //gora
@@ -643,7 +643,7 @@ void ShowMenu()
 						if (!loadGame())
 						{
 							system("CLS");
-							drawMenuItem(25, 13, kolor_blok_przeciwnik, "Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"); //error
+							console::drawMenuItem(25, 13, kolor_blok_przeciwnik, "Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"); //error
 							system("pause");
 							system("CLS");
 							break;
@@ -713,7 +713,7 @@ void Atack()
 				EnemiesKilled++;
 				COORD tmp = GetOnScreenPos(enemies[i].position);
 
-				putCharXY(tmp.X, tmp.Y, blok_pusty); //usuniecie przeciwnika z widoku
+				console::putCharXY(tmp.X, tmp.Y, blok_pusty); //usuniecie przeciwnika z widoku
 
 													 //usuniecie przeciwnika z mapy
 				map[enemies[i].position.Y][enemies[i].position.X] = blok_pusty;

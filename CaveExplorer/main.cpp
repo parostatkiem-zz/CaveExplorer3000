@@ -17,8 +17,7 @@ Enemy enemies[MaxEnemyNum] ;
 
 int main()
 {
-
-	initScreen();
+	console::initScreen();
 
 
 

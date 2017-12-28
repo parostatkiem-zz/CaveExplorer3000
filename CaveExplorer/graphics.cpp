@@ -40,9 +40,9 @@ void RefreshMap()
 			c = map[y][x];
 			if (x < 0 || x >= MapMaxX || y < 0 || y >= MapMaxY)
 			{
-				setColor(kolor_tlo);
+				console::setColor(kolor_tlo);
 				printf(" ");
-				setColor(0x0F);
+				console::setColor(0x0F);
 				continue;
 			}
 
@@ -51,44 +51,44 @@ void RefreshMap()
 			switch (c)
 			{
 			case (char)blok_gracz:
-				setColor(kolor_gracz);
+				console::setColor(kolor_gracz);
 				break;
 
 			case (char)(blok_zwykly) :
-				setColor(kolor_blok_zwykly);
+				console::setColor(kolor_blok_zwykly);
 				break;
 			case (char)(blok_zwykly_ukruszony) :
-				setColor(kolor_blok_zwykly);
+				console::setColor(kolor_blok_zwykly);
 				break;
 
 			case (char)blok_przeciwnik:
-				setColor(kolor_blok_przeciwnik);
+				console::setColor(kolor_blok_przeciwnik);
 				break;
 
 			case (char)blok_staly:
-				setColor(kolor_blok_staly);
+				console::setColor(kolor_blok_staly);
 				break;
 			}
 			//if (CalculateDistance(player,tmp)<=Visibility)
 			printf("%c", c);
 
-			setColor(0x0F);
+			console::setColor(0x0F);
 
 		}
 		printf("\n");
 	}
-	setColor(kolor_gracz);
-	putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
+	console::setColor(kolor_gracz);
+	console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
 
 
 	//czy portal jest w zasiegu mapy
 	tmp = GetOnScreenPos(portal);
 	if (tmp.X >= 0 && tmp.X <= ViewportW &&tmp.Y >= 0 && tmp.Y <= ViewportH)
 	{
-		setColor(kolor_portal);
-		putCharXY(portal.X - viewport.X, portal.Y - viewport.Y, blok_portal);
+		console::setColor(kolor_portal);
+		console::putCharXY(portal.X - viewport.X, portal.Y - viewport.Y, blok_portal);
 	}
-	setColor(0x0F);
+	console::setColor(0x0F);
 }
 
 void RefreshGui()
@@ -105,60 +105,60 @@ void RefreshGui()
 
 	///==========HP=========
 
-	setColor(0x0c);
+	console::setColor(0x0c);
 	char c = 178;
 	for (int i = 1; i <= 15; i++)
 	{
 
 		if (i > hpPercent)
 		{
-			setColor(0x08);
+			console::setColor(0x08);
 			c = 176;
 		}
 
-		putCharXY(ViewportW + 6 + i, 1, c);
+		console::putCharXY(ViewportW + 6 + i, 1, c);
 	}
 
-	setColor(0x0c);
+	console::setColor(0x0c);
 
 	snprintf(buf, sizeof buf, "%d ", player.hp);
-	putStrXY(ViewportW + 6 + 15 + 2, 1, buf);  //current level number
+	console::putStrXY(ViewportW + 6 + 15 + 2, 1, buf);  //current level number
 
 											   ///==========LVL=========
 	int lvlPercent = player.exp * 15 / ExpToNextLevel;
 
 
-	setColor(0x0A);
+	console::setColor(0x0A);
 	c = 178;
 	for (int i = 1; i <= 15; i++)
 	{
 
 		if (i > lvlPercent)
 		{
-			setColor(0x08);
+			console::setColor(0x08);
 			c = 176;
 		}
 
-		putCharXY(ViewportW + 6 + i, 3, c);
+		console::putCharXY(ViewportW + 6 + i, 3, c);
 	}
-	setColor(0x0A);
+	console::setColor(0x0A);
 
 	snprintf(buf, sizeof buf, "%d", player.level);
-	putStrXY(ViewportW + 7, 4, buf);  //current level number
-	setColor(0x08);
+	console::putStrXY(ViewportW + 7, 4, buf);  //current level number
+	console::setColor(0x08);
 
 
 	snprintf(buf, sizeof buf, "%d", player.level + 1);
-	putStrXY(ViewportW + 7 + 15 - 1, 4, buf); //next level number
+	console::putStrXY(ViewportW + 7 + 15 - 1, 4, buf); //next level number
 
 
 
-	setColor(0xD0);
+	console::setColor(0xD0);
 	snprintf(buf, sizeof buf, "%d - %d", (int)(player.damage * MinDamageMultiplier), player.damage);
-	putStrXY(ViewportW + 7, 6, buf); //player min and max damage number
+	console::putStrXY(ViewportW + 7, 6, buf); //player min and max damage number
 
 	snprintf(buf, sizeof buf, "%d", CurrentLevel + 1);
-	putStrXY(ViewportW + 21, 6, buf); //cave deep
+	console::putStrXY(ViewportW + 21, 6, buf); //cave deep
 
 
 									  ///==========Portal=========
@@ -169,19 +169,19 @@ void RefreshGui()
 	float tmp = (float)(dist / maxDist);
 	float val = tmp * 12;
 
-	setColor(0x08);
+	console::setColor(0x08);
 	c = 176;
 	for (int i = 1; i <= 12; i++)
 	{
 
 		if (i > val)
 		{
-			setColor(kolor_portal);
+			console::setColor(kolor_portal);
 
 			c = 178;
 		}
 
-		putCharXY(ViewportW + 10 + 12 - i, 8, c);
+		console::putCharXY(ViewportW + 10 + 12 - i, 8, c);
 	}
 
 
@@ -197,17 +197,17 @@ void RefreshGui()
 
 void InitGui()
 {
-	setColor(0x04);
-	putStrXY(ViewportW + 2, 1, "HP:");
+	console::setColor(0x04);
+	console::putStrXY(ViewportW + 2, 1, "HP:");
 
-	setColor(0x02);
-	putStrXY(ViewportW + 2, 3, "LVL:");
+	console::setColor(0x02);
+	console::putStrXY(ViewportW + 2, 3, "LVL:");
 
-	setColor(0x05);
-	putStrXY(ViewportW + 2, 6, "DMG:"); putStrXY(ViewportW + 15, 6, "CAVE:");
+	console::setColor(0x05);
+	console::putStrXY(ViewportW + 2, 6, "DMG:"); console::putStrXY(ViewportW + 15, 6, "CAVE:");
 
-	setColor(0x09);
-	putStrXY(ViewportW + 2, 8, "Portal:");
+	console::setColor(0x09);
+	console::putStrXY(ViewportW + 2, 8, "Portal:");
 }
 
 void Log(char* text, int num)
@@ -221,23 +221,23 @@ void Log(char* text, int num)
 	if (num <0)
 	{
 		//gracz przyjal obrazenia
-		setColor(0x04);
+		console::setColor(0x04);
 		snprintf(buf, sizeof buf, "%s: %d", text, -num);
 	}
 	else if (num > 0)
 	{
 		//gracz zadal obrazenia
-		setColor(0x0A);
+		console::setColor(0x0A);
 		snprintf(buf, sizeof buf, "%s: %d", text, num);
 
 	}
 	else
 	{
 		//inna wiadomosc
-		setColor(0x08);
+		console::setColor(0x08);
 		snprintf(buf, sizeof buf, "%s", text);
 	}
-	putStrXY(ViewportW + 1, ViewportH - 1 - LogLevel, buf);
+	console::putStrXY(ViewportW + 1, ViewportH - 1 - LogLevel, buf);
 	LogLevel++;
 }
 
@@ -247,14 +247,14 @@ void ClearLog()
 	int i = 0;
 	for (i = 9; i < ViewportH; i++)
 	{
-		putStrXY(ViewportW + 1, i, "                                      ");
+		console::putStrXY(ViewportW + 1, i, "                                      ");
 	}
 }
 
 void ShowDeathScreen()
 {
 	system("cls");
-	setColor(kolor_logo);
+	console::setColor(kolor_logo);
 	printf("                                     ____\n");
 	printf("                              __,---'     `--.__\n");
 	printf("                           ,-'                ; `.\n");
@@ -286,23 +286,23 @@ void ShowDeathScreen()
 
 	//przezyles xxx itd.
 
-	setColor(kolor_menu_aktywny);
+	console::setColor(kolor_menu_aktywny);
 	snprintf(buf, sizeof buf, "Doszedˆe˜ do jaskini: ", CurrentLevel + 1);
-	putStrXY(62, 3, buf);
-	setColor(0xD0);
+	console::putStrXY(62, 3, buf);
+	console::setColor(0xD0);
 	snprintf(buf, sizeof buf, "%d", CurrentLevel + 1);
-	putStrXY(62 + 23, 3, buf);
+	console::putStrXY(62 + 23, 3, buf);
 
-	setColor(kolor_menu_aktywny);
+	console::setColor(kolor_menu_aktywny);
 
 	snprintf(buf, sizeof buf, "Osi¥gn¥ˆe˜ poziom: %d", player.level);
-	putStrXY(62, 5, buf);
+	console::putStrXY(62, 5, buf);
 
 	snprintf(buf, sizeof buf, "Zabiˆe˜ %d przeciwnik¢w", EnemiesKilled);
-	putStrXY(62, 7, buf);
+	console::putStrXY(62, 7, buf);
 
 	snprintf(buf, sizeof buf, "Poruszˆe˜ si© %d razy", TotalTurns);
-	putStrXY(62, 9, buf);
+	console::putStrXY(62, 9, buf);
 
 }
 
@@ -323,15 +323,15 @@ void ShowOptions(int initialGameState)
 	{
 
 
-		drawMenuItem(16, 12, kolor_menu, "Obsˆuga zapisu i wczytywania gry");
+		console::drawMenuItem(16, 12, kolor_menu, "Obsˆuga zapisu i wczytywania gry");
 		if (menuIndex == 1)
-			drawMenuItem(16 + 37, 12, 0x0A, "TAK"); //lewo
+			console::drawMenuItem(16 + 37, 12, 0x0A, "TAK"); //lewo
 		else
-			drawMenuItem(16 + 37, 12, 0x0A, "NIE"); //prawo
+			console::drawMenuItem(16 + 37, 12, 0x0A, "NIE"); //prawo
 
 
 
-		c = getKey();
+		c = console::getKey();
 
 
 		if (c == 75) //lewo
@@ -368,18 +368,18 @@ void ShowOptions(int initialGameState)
 
 void DrawLogo()
 {
-	setColor(kolor_logo);
+	console::setColor(kolor_logo);
 
 
-	putStrXY(1, 0, "_________                    ___________             .__              ");
-	putStrXY(1, 1, "\\_   ___ \\_____ ___  __ ____ \\_   _____/__  ________ |  |   ___________  ___________ ");
-	putStrXY(1, 2, "/    \\  \\/\\__  \\\\  \\/ // __ \\ |    __)_\\  \\/  |____ \\|  |  /  _ \\_  __ \\/ __ \\_  __ \\");
-	putStrXY(1, 3, "\\     \\____/ __ \\\\   /\\  ___/ |        \\>    <|  |_> >  |_(  <_> )  | \\|  ___/|  | \\/");
-	putStrXY(1, 4, " \\______  (____  /\\_/  \\___  >_______  /__/\\_ \\   __/|____/\\____/|__|   \\___  >__|   ");
-	putStrXY(1, 5, "        \\/     \\/          \\/        \\/      \\/__|                          \\/       ");
+	console::putStrXY(1, 0, "_________                    ___________             .__              ");
+	console::putStrXY(1, 1, "\\_   ___ \\_____ ___  __ ____ \\_   _____/__  ________ |  |   ___________  ___________ ");
+	console::putStrXY(1, 2, "/    \\  \\/\\__  \\\\  \\/ // __ \\ |    __)_\\  \\/  |____ \\|  |  /  _ \\_  __ \\/ __ \\_  __ \\");
+	console::putStrXY(1, 3, "\\     \\____/ __ \\\\   /\\  ___/ |        \\>    <|  |_> >  |_(  <_> )  | \\|  ___/|  | \\/");
+	console::putStrXY(1, 4, " \\______  (____  /\\_/  \\___  >_______  /__/\\_ \\   __/|____/\\____/|__|   \\___  >__|   ");
+	console::putStrXY(1, 5, "        \\/     \\/          \\/        \\/      \\/__|                          \\/       ");
 
 
-	setColor(0x08);
-	putStrXY(60, 20, "by  Jan Sudczak & Filip Strozik");
-	setColor(0x0F);
+	console::setColor(0x08);
+	console::putStrXY(60, 20, "by  Jan Sudczak & Filip Strozik");
+	console::setColor(0x0F);
 }
