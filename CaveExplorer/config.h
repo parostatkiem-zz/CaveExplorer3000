@@ -14,6 +14,7 @@
 #include "gameEngine.h"
 #include "gameSave.h" 
 #include "graphics.h"
+#include "mapObjects.h"
 
 
 
@@ -86,27 +87,8 @@ extern unsigned int EnemiesKilled;
 
 extern unsigned int GameSaveLoad;
 
-extern COORD viewport;
-extern COORD portal;
-class playerClass
-{
-public:
-	int hp;
-	int maxhp;
-	int damage;
-	COORD position;
-	int level;
-	int exp;
-
-};
+extern mapObject viewport;
+extern mapObject portal;
+extern enemy enemies[MaxEnemyNum];
 extern playerClass player;
-class Enemy
-{
-public:
-	int hp;
-	int damage;
-	COORD position;
-	
-};
-extern Enemy enemies[MaxEnemyNum];
 

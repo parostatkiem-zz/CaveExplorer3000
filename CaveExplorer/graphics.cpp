@@ -18,8 +18,8 @@ void RefreshMap()
 	int y = 0;
 
 
-	viewport.X = player.position.X - ViewportW / 2;
-	viewport.Y = player.position.Y - ViewportH / 2;
+	viewport.position.X = player.position.X - ViewportW / 2;
+	viewport.position.Y = player.position.Y - ViewportH / 2;
 
 	//InitGui();
 	/*system("CLS");
@@ -27,13 +27,13 @@ void RefreshMap()
 	RefreshGui();*/
 
 	char c;
-	COORD tmp;
-	for (y = viewport.Y; y < viewport.Y + ViewportH; y++)
+	mapObject tmp;
+	for (y = viewport.position.Y; y < viewport.position.Y + ViewportH; y++)
 	{
-		for (x = viewport.X; x < viewport.X + ViewportW; x++)
+		for (x = viewport.position.X; x < viewport.position.X + ViewportW; x++)
 		{
-			tmp.X = x - ViewportH / 2;
-			tmp.Y = y;
+			tmp.position.X = x - ViewportH / 2;
+			tmp.position.Y = y;
 
 
 
@@ -78,15 +78,15 @@ void RefreshMap()
 		printf("\n");
 	}
 	console::setColor(kolor_gracz);
-	console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
+	console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, blok_gracz);
 
 
 	//czy portal jest w zasiegu mapy
-	tmp = GetOnScreenPos(portal);
-	if (tmp.X >= 0 && tmp.X <= ViewportW &&tmp.Y >= 0 && tmp.Y <= ViewportH)
+	tmp.position = GetOnScreenPos(portal.position);
+	if (tmp.position.X >= 0 && tmp.position.X <= ViewportW && tmp.position.Y >= 0 && tmp.position.Y <= ViewportH)
 	{
 		console::setColor(kolor_portal);
-		console::putCharXY(portal.X - viewport.X, portal.Y - viewport.Y, blok_portal);
+		console::putCharXY(portal.position.X - viewport.position.X, portal.position.Y - viewport.position.Y, blok_portal);
 	}
 	console::setColor(0x0F);
 }
@@ -165,7 +165,7 @@ void RefreshGui()
 
 
 	float maxDist = sqrt(pow(MapMaxX, 2) + pow(MapMaxY, 2))*0.75;
-	float dist = CalculateDistance(player.position, portal);
+	float dist = CalculateDistance(player.position, portal.position);
 	float tmp = (float)(dist / maxDist);
 	float val = tmp * 12;
 

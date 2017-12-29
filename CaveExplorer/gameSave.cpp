@@ -83,7 +83,7 @@ int saveGame()
 		file<<enemies[x].position.X<<","<< enemies[x].position.Y << "," << enemies[x].damage << "," << enemies[x].hp<<"|";
 	}
 	file<<"\n";
-	file<<"portal="<<portal.X<<","<< portal.Y;
+	file<<"portal="<<portal.position.X<<","<< portal.position.Y;
 	file.close();
 	return 1;
 }
@@ -116,7 +116,7 @@ int loadGame()
 	int n = 0;
 	int k = 0;
 	char* zmienna= new char[zmienna_size];
-	struct Enemy e; //tymczasowa zmienna przeciwnika
+	struct enemy e; //tymczasowa zmienna przeciwnika
 	e.position.X = 0;
 	e.position.Y = 0;
 
@@ -255,10 +255,10 @@ int loadGame()
 					switch (n)
 					{
 					case 0: //pierwsza liczba w ciagu
-						portal.X = atoi(tmp);
+						portal.position.X = atoi(tmp);
 						break;
 					case 1:
-						portal.Y = atoi(tmp);
+						portal.position.Y = atoi(tmp);
 						continue;
 						break;
 

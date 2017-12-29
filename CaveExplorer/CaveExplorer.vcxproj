@@ -147,6 +147,7 @@
     <ClInclude Include="gameEngine.h" />
     <ClInclude Include="gameSave.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="mapObjects.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console.cpp" />

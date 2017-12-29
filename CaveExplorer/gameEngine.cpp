@@ -41,7 +41,7 @@ void InitializeLevel(int level)
 	}
 
 	//generowanie przeciwnikow===================
-	struct Enemy e;
+	struct enemy e;
 	e.position.X = 0;
 	e.position.Y = 0;
 	for (i = 0; i < MaxEnemyNum; i++) //czyszczenie tablicy przeciwnikow
@@ -106,7 +106,10 @@ int RandomInt(int min, int max)
 
 void CheckRefresh()
 {
-	if (player.position.X - viewport.X <= DTETR || player.position.X - viewport.X >= ViewportW - DTETR || player.position.Y - viewport.Y <= DTETR || player.position.Y - viewport.Y >= ViewportH - DTETR)
+	if (player.position.X - viewport.position.X <= DTETR 
+		|| player.position.X - viewport.position.X >= ViewportW - DTETR 
+		|| player.position.Y - viewport.position.Y <= DTETR
+		|| player.position.Y - viewport.position.Y >= ViewportH - DTETR)
 	{
 
 		RefreshMap();
@@ -149,17 +152,17 @@ void AddCaveSegment(COORD punkt)
 
 void PlacePlayer()
 {
-	COORD tmp;
-	tmp.X = RandomInt(1, MapMaxX - 1);
-	tmp.Y = RandomInt(1, MapMaxY - 1);
+	mapObject tmp;
+	tmp.position.X = RandomInt(1, MapMaxX - 1);
+	tmp.position.Y = RandomInt(1, MapMaxY - 1);
 
-	unsigned char b = map[tmp.Y][tmp.X];
+	unsigned char b = map[tmp.position.Y][tmp.position.X];
 	unsigned char c = blok_pusty;
 
 	if (b == c)
 	{
 		//map[tmp.X][tmp.Y] = blok_gracz;
-		player.position = tmp;
+		player.position = tmp.position;
 
 		return;
 	}
@@ -232,15 +235,15 @@ int TryMove(char direction)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_zwykly_ukruszony);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y - 1, blok_zwykly_ukruszony);
 				map[player.position.Y - 1][player.position.X] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				//blok juz jest ukruszony, mozna go zniszczyc i sie tam przemiescic LUB pole jest puste
 				player.position.Y--;
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_pusty);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y + 1, blok_pusty);
 			}
 		}
 		break;
@@ -253,14 +256,14 @@ int TryMove(char direction)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_zwykly_ukruszony);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y + 1, blok_zwykly_ukruszony);
 				map[player.position.Y + 1][player.position.X] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				player.position.Y++;
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_pusty);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y - 1, blok_pusty);
 			}
 		}
 		break;
@@ -273,14 +276,14 @@ int TryMove(char direction)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
-				console::putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
+				console::putCharXY(player.position.X - viewport.position.X + 1, player.position.Y - viewport.position.Y, blok_zwykly_ukruszony);
 				map[player.position.Y][player.position.X + 1] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				player.position.X++;
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				console::putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_pusty);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.position.X - 1, player.position.Y - viewport.position.Y, blok_pusty);
 			}
 		}
 		break;
@@ -293,14 +296,14 @@ int TryMove(char direction)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
-				console::putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
+				console::putCharXY(player.position.X - viewport.position.X - 1, player.position.Y - viewport.position.Y, blok_zwykly_ukruszony);
 				map[player.position.Y][player.position.X - 1] = blok_zwykly_ukruszony;
 			}
 			else
 			{
 				player.position.X--;
-				console::putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				console::putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_pusty);
+				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, blok_gracz);
+				console::putCharXY(player.position.X - viewport.position.X + 1, player.position.Y - viewport.position.Y, blok_pusty);
 			}
 
 		}
@@ -317,8 +320,8 @@ int TryMove(char direction)
 COORD GetOnScreenPos(COORD p)
 {
 	COORD out;
-	out.X = p.X - viewport.X;
-	out.Y = p.Y - viewport.Y;
+	out.X = p.X - viewport.position.X;
+	out.Y = p.Y - viewport.position.Y;
 	return out;
 }
 
@@ -778,17 +781,17 @@ void RegenerateLife()
 
 void PlacePortal()
 {
-	COORD tmp;
-	tmp.X = RandomInt(1, MapMaxX - 1);
-	tmp.Y = RandomInt(1, MapMaxY - 1);
+	mapObject tmp;
+	tmp.position.X = RandomInt(1, MapMaxX - 1);
+	tmp.position.Y = RandomInt(1, MapMaxY - 1);
 
-	unsigned char b = map[tmp.Y][tmp.X];
+	unsigned char b = map[tmp.position.Y][tmp.position.X];
 	unsigned char c = blok_pusty;
 
 	if (b == c)
 	{
 		//map[tmp.X][tmp.Y] = blok_gracz;
-		portal = tmp;
+		portal.position = tmp.position;
 
 		return;
 	}
@@ -801,7 +804,7 @@ void PlacePortal()
 
 void CheckPortal() //sprawdza, czy gracz nie  wszedl w portal
 {
-	if (player.position.X == portal.X && player.position.Y == portal.Y)
+	if (player.position.X == portal.position.X && player.position.Y == portal.position.Y)
 	{
 		InitializeLevel(++CurrentLevel);
 	}

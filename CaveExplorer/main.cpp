@@ -11,9 +11,9 @@ unsigned int EnemiesKilled = 0;
 unsigned int GameSaveLoad = 1;
 
 playerClass player;
-COORD viewport;
-COORD portal;
-Enemy enemies[MaxEnemyNum] ;
+mapObject viewport;
+mapObject portal;
+enemy enemies[MaxEnemyNum] ;
 
 int main()
 {
