@@ -1,7 +1,7 @@
 //CAVE EXPLORER 
 #include "config.h"
 
-unsigned char map[200][200];
+unsigned char area[200][200];
 unsigned int GameState = 0;
 unsigned int LogLevel = 0;
 unsigned int TotalTurns = 0;
@@ -25,7 +25,7 @@ int main()
 
 
 
-	ShowMenu();
+	menu::ShowMenu();
 
 
 	system("PAUSE");

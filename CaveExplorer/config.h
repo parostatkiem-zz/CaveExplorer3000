@@ -78,7 +78,7 @@
 
 
 //globalna definicja zmiennych
-extern unsigned char map[200][200];
+extern unsigned char area[200][200];
 extern unsigned int GameState;
 extern unsigned int LogLevel;
 extern unsigned int TotalTurns;
@@ -92,3 +92,7 @@ extern mapObject portal;
 extern enemy enemies[MaxEnemyNum];
 extern playerClass player;
 
+
+extern unsigned int tmp;
+extern unsigned int Turns;
+extern int CaveSegments;

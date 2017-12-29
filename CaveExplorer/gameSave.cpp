@@ -66,7 +66,7 @@ int saveGame()
 				{
 					
 				for (int y = 0; y < MapMaxX; y++)
-					tmp += map[x][y];
+					tmp += area[x][y];
 				}
 	file << "map=" << tmp.c_str();
 	file<< "\n";
@@ -161,7 +161,7 @@ int loadGame()
 		{
 			for (int x = 0; x <= MapMaxY; x++)
 			{
-			memcpy(map[x], (unsigned char*)line, MapMaxX); // OK
+			memcpy(area[x], (unsigned char*)line, MapMaxX); // OK
 				for (int y = 0; y<MapMaxX; y++)
 					*line++;
 			}

@@ -37,7 +37,7 @@ void RefreshMap()
 
 
 
-			c = map[y][x];
+			c = area[y][x];
 			if (x < 0 || x >= MapMaxX || y < 0 || y >= MapMaxY)
 			{
 				console::setColor(kolor_tlo);
@@ -82,7 +82,7 @@ void RefreshMap()
 
 
 	//czy portal jest w zasiegu mapy
-	tmp.position = GetOnScreenPos(portal.position);
+	tmp.position = map::GetOnScreenPos(portal.position);
 	if (tmp.position.X >= 0 && tmp.position.X <= ViewportW && tmp.position.Y >= 0 && tmp.position.Y <= ViewportH)
 	{
 		console::setColor(kolor_portal);
@@ -165,7 +165,7 @@ void RefreshGui()
 
 
 	float maxDist = sqrt(pow(MapMaxX, 2) + pow(MapMaxY, 2))*0.75;
-	float dist = CalculateDistance(player.position, portal.position);
+	float dist = mathem::CalculateDistance(player.position, portal.position);
 	float tmp = (float)(dist / maxDist);
 	float val = tmp * 12;
 
