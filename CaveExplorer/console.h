@@ -1,20 +1,27 @@
 #pragma once
-// Funkcje obs³ugi konsoli
+#include <Windows.h>
+// clasa obs³ugi konsoli
+static class console {
+public:
 
-// Ustawienie odpowiednich parametrów konsoli
-void initScreen(void);
+	// Ustawianie zadanego rozmiaru okna
+	static void SetConsoleWindowSize(int x, int y);
 
-// Drukowanie znaku z na pozycji (x,y)
-void putCharXY(int x, int y, unsigned char z);
+	// Ustawienie odpowiednich parametrów konsoli
+	static void initScreen(void);
 
-// Drukowanie ³añcucha s od pozycji (x,y)
-void putStrXY(int x, int y, const char *s);
+	// Drukowanie znaku z na pozycji (x,y)
+	static void putCharXY(int x, int y, unsigned char z);
 
-// Zmiana kolorów w konsoli
-void setColor(unsigned short id);
+	// Drukowanie ³añcucha s od pozycji (x,y)
+	static void putStrXY(int x, int y, const char *s);
 
-// Pobieranie znaku z konsoli
-char getKey(void);
+	// Zmiana kolorów w konsoli
+	static void setColor(unsigned short id);
 
-//Wypisanie tekstu w ramce
-void drawMenuItem(int x, int y, unsigned short c, const char *s); 
+	// Pobieranie znaku z konsoli
+	static char getKey(void);
+
+	//Wypisanie tekstu w ramce
+	static void drawMenuItem(int x, int y, unsigned short c, const char *s);
+};

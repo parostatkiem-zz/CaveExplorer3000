@@ -2,93 +2,17 @@
 
 
 
-unsigned int tmp = 0;
-unsigned int Turns = 0;
-int CaveSegments = 0;
+unsigned int tmp;
+unsigned int Turns;
+int CaveSegments;
 
-void InitializeLevel(int level)
+
+int mathem::CalculateDistance(COORD a, COORD b)
 {
-	system("CLS");
-	srand(time(NULL));
-	int x = 0;
-	int y = 0;
-
-
-
-
-	for (x = 0; x < MapMaxX; x++)
-	{
-		for (y = 0; y < MapMaxY; y++)
-		{
-			if (x == 0 || x == MapMaxX - 1 || y == 0 || y == MapMaxY - 1)
-				map[y][x] = blok_staly; //otaczanie mapy nierozbijalnymi blokami
-			else
-				map[y][x] = blok_zwykly; // wypelnianie mapy blokami do rozwalenia
-		}
-	}
-
-	//generowanie jaskin
-	int i = 0;
-	for (i = 0; i <= CavesPerLevel; i++)
-	{
-		CaveSegments = 0;
-		COORD tmp;
-		tmp.X = RandomInt(1, MapMaxX - 1);
-		tmp.Y = RandomInt(1, MapMaxX - 1);
-		//map[tmp.X][tmp.Y] = blok_pusty;
-		AddCaveSegment(tmp);
-
-	}
-
-	//generowanie przeciwnikow===================
-	struct Enemy e;
-	e.position.X = 0;
-	e.position.Y = 0;
-	for (i = 0; i < MaxEnemyNum; i++) //czyszczenie tablicy przeciwnikow
-	{
-		enemies[i] = e; //resetowanie pozycji kazdego przeciwnika na (0,0) - oznacza to,ze on nie  istnieje
-	}
-
-
-	e.damage = EnemyStartDamage + (EnemyMultiplier*level);
-	e.hp = EnemyStartHp + (EnemyMultiplier*level);
-	for (i = 0; i < EnemyAmount + (EnemyMultiplier*level) - 2; i++)
-	{
-		int a = EnemyAmount + (EnemyMultiplier*level);
-		COORD tmp;
-		tmp.X = RandomInt(1, MapMaxX - 1);
-		tmp.Y = RandomInt(1, MapMaxX - 1);
-
-		if (map[tmp.Y][tmp.X] == blok_pusty)
-		{
-			COORD tmp2;
-			tmp2.X = tmp.Y;
-			tmp2.Y = tmp.X;
-			e.position = tmp;
-			//wylosowana pozycja jest pusta. Stawianie przeciwnika
-			enemies[i] = e;
-			map[tmp.Y][tmp.X] = blok_przeciwnik;
-		}
-		else
-			i--;
-
-	}
-
-
-	//ustawianie gracza
-	PlacePlayer();
-
-	PlacePortal();
-
-	RefreshMap();
-	InitGui();
-	RefreshGui();
-
-
-
+	return sqrt(pow((a.X - b.X), 2) + pow((a.Y - b.Y), 2));
 }
 
-int RandomInt(int min, int max)
+int mathem::RandomInt(int min, int max)
 {
 	int r;
 	const unsigned int range = 1 + max - min;
@@ -104,425 +28,8 @@ int RandomInt(int min, int max)
 	return min + (r / buckets);
 }
 
-void CheckRefresh()
-{
-	if (player.position.X - viewport.X <= DTETR || player.position.X - viewport.X >= ViewportW - DTETR || player.position.Y - viewport.Y <= DTETR || player.position.Y - viewport.Y >= ViewportH - DTETR)
-	{
 
-		RefreshMap();
-
-	}
-}
-
-void AddCaveSegment(COORD punkt)
-{
-	int a = RandomInt(0, 100);
-	unsigned char b = map[punkt.Y][punkt.X];
-	unsigned char c = blok_zwykly;
-
-
-	if (b == blok_zwykly && a<CaveSize || CaveSegments<MinCaveSize && b == blok_zwykly)
-	{
-		CaveSegments++;
-		map[punkt.Y][punkt.X] = blok_pusty;
-
-
-		//generowanie segmentow dla sasiednich 4 pol
-		COORD tmp;
-		tmp.X = punkt.X + 1;
-		tmp.Y = punkt.Y;
-		AddCaveSegment(tmp);
-
-		tmp.X = punkt.X;
-		tmp.Y = punkt.Y + 1;
-		AddCaveSegment(tmp);
-
-		tmp.X = punkt.X - 1;
-		tmp.Y = punkt.Y;
-		AddCaveSegment(tmp);
-
-		tmp.X = punkt.X;
-		tmp.Y = punkt.Y - 1;
-		AddCaveSegment(tmp);
-	}
-}
-
-void PlacePlayer()
-{
-	COORD tmp;
-	tmp.X = RandomInt(1, MapMaxX - 1);
-	tmp.Y = RandomInt(1, MapMaxY - 1);
-
-	unsigned char b = map[tmp.Y][tmp.X];
-	unsigned char c = blok_pusty;
-
-	if (b == c)
-	{
-		//map[tmp.X][tmp.Y] = blok_gracz;
-		player.position = tmp;
-
-		return;
-	}
-	else
-	{
-		PlacePlayer();
-	}
-
-}
-
-void Move()
-{
-
-	unsigned char znak;
-	do
-	{
-		znak = getKey();
-		if (znak == 0 || znak == 0xE0)
-			znak = getKey();  //'czyszczenie' znaku ze œmieci jeœli jest enterem albo czymœ takim
-
-		if (znak == 72 || znak == 80 || znak == 77 || znak == 75)
-		{
-			if (GameState == 1)
-			{
-				ClearLog();
-				RegenerateLife();
-				TryMove(znak);
-				CheckPortal();
-				MoveEnemies();
-				CheckRefresh();
-				RefreshGui();
-			}
-
-		}
-		if (znak == 27) //escape pressed
-		{
-			ShowMenu();
-		}
-
-		if (znak == 32) //space pressed
-		{
-			if (GameState == 1)
-			{
-				ClearLog();
-				RegenerateLife();
-				Atack();
-			}
-		}
-
-
-
-
-	} while (1);
-
-
-}
-
-int TryMove(char direction)
-{
-	COORD tmp = player.position;
-	setColor(kolor_gracz);
-	switch (direction)
-	{
-	case 72: //gora
-		if (map[player.position.Y - 1][player.position.X] == blok_pusty || map[player.position.Y - 1][player.position.X] == blok_zwykly || map[player.position.Y - 1][player.position.X] == blok_zwykly_ukruszony)
-		{
-			TotalTurns++;
-			Turns++;
-			if (map[player.position.Y - 1][player.position.X] == blok_zwykly)
-			{
-				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_zwykly_ukruszony);
-				map[player.position.Y - 1][player.position.X] = blok_zwykly_ukruszony;
-			}
-			else
-			{
-				//blok juz jest ukruszony, mozna go zniszczyc i sie tam przemiescic LUB pole jest puste
-				player.position.Y--;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_pusty);
-			}
-		}
-		break;
-	case 80:  //dol
-		if (map[player.position.Y + 1][player.position.X] == blok_pusty || map[player.position.Y + 1][player.position.X] == blok_zwykly || map[player.position.Y + 1][player.position.X] == blok_zwykly_ukruszony)
-		{
-			TotalTurns++;
-			Turns++;
-			if (map[player.position.Y + 1][player.position.X] == blok_zwykly)
-			{
-				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y + 1, blok_zwykly_ukruszony);
-				map[player.position.Y + 1][player.position.X] = blok_zwykly_ukruszony;
-			}
-			else
-			{
-				player.position.Y++;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y - 1, blok_pusty);
-			}
-		}
-		break;
-	case 77: //prawo
-		if (map[player.position.Y][player.position.X + 1] == blok_pusty || map[player.position.Y][player.position.X + 1] == blok_zwykly || map[player.position.Y][player.position.X + 1] == blok_zwykly_ukruszony)
-		{
-			TotalTurns++;
-			Turns++;
-			if (map[player.position.Y][player.position.X + 1] == blok_zwykly)
-			{
-				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
-				map[player.position.Y][player.position.X + 1] = blok_zwykly_ukruszony;
-			}
-			else
-			{
-				player.position.X++;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_pusty);
-			}
-		}
-		break;
-	case 75: //lewo
-		if (map[player.position.Y][player.position.X - 1] == blok_pusty || map[player.position.Y][player.position.X - 1] == blok_zwykly || map[player.position.Y][player.position.X - 1] == blok_zwykly_ukruszony)
-		{
-			TotalTurns++;
-			Turns++;
-			if (map[player.position.Y][player.position.X - 1] == blok_zwykly)
-			{
-				//nalezy ukruszyc blok
-				setColor(kolor_blok_zwykly);
-				putCharXY(player.position.X - viewport.X - 1, player.position.Y - viewport.Y, blok_zwykly_ukruszony);
-				map[player.position.Y][player.position.X - 1] = blok_zwykly_ukruszony;
-			}
-			else
-			{
-				player.position.X--;
-				putCharXY(player.position.X - viewport.X, player.position.Y - viewport.Y, blok_gracz);
-				putCharXY(player.position.X - viewport.X + 1, player.position.Y - viewport.Y, blok_pusty);
-			}
-
-		}
-		break;
-	}
-
-	map[player.position.Y][player.position.X] = blok_pusty;
-
-	setColor(0x0F);
-
-	return 1;
-}
-
-COORD GetOnScreenPos(COORD p)
-{
-	COORD out;
-	out.X = p.X - viewport.X;
-	out.Y = p.Y - viewport.Y;
-	return out;
-}
-
-void MoveEnemies()
-{
-	int i;
-	int xDist = 0;
-	int yDist = 0;
-	for (i = 0; i < MaxEnemyNum; i++) //petla po wszystkich przeciwnikach
-	{
-		if (enemies[i].position.X == 0 && enemies[i].position.Y == 0)
-			continue; //koniec petli jesli przeciwnik nie istnieje
-
-		int tmp = CalculateDistance(enemies[i].position, player.position);
-		if (CalculateDistance(enemies[i].position, player.position) <= SeeDistance) //jesli przeciwnik widzi gracza
-		{
-			setColor(kolor_blok_przeciwnik);
-			if (CalculateDistance(enemies[i].position, player.position) <= 1) //przeciwnik stoi kolo gracza
-			{
-				//przeciwnik atakuje
-				int obrazenia = RandomInt(MinDamageMultiplier*enemies[i].damage, enemies[i].damage);
-				if (player.hp - obrazenia > 0)
-				{
-					player.hp -= obrazenia; //gracz otrzymuje cios
-					Log("Otrzymaˆe˜ obra¾enia", -obrazenia);
-				}
-				else
-					Death();   //gracz umiera
-
-			}
-			else //przeciwnik idzie w kierunku gracza
-			{
-				xDist = enemies[i].position.X - player.position.X;
-				yDist = enemies[i].position.Y - player.position.Y;
-				if (abs(xDist) > abs(yDist)) //przeciwnik porusza si© w osi poziomej
-				{
-					if (xDist > 0) //w lewo
-					{
-						if (map[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || map[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
-						{
-							//moze sie normalnie poruszyc w wyznaczonym kierunku
-							enemies[i].position.X--;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-							map[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
-						}
-						else
-						{
-							if (yDist > 0) //w gore
-							{
-								if (map[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || map[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.Y--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
-									map[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
-								}
-							}
-							else //w dol
-							{
-								if (map[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || map[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.Y++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
-									map[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
-								}
-							}
-						}
-					}
-					else //w prawo
-					{
-						if (map[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || map[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
-						{
-							//moze sie normalnie poruszyc w wyznaczonym kierunku
-							enemies[i].position.X++;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-							map[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
-						}
-						else
-						{
-							if (yDist > 0) //w gore
-							{
-								if (map[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || map[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.Y--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
-									map[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
-								}
-							}
-							else //w dol
-							{
-								if (map[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || map[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.Y++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
-									map[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
-								}
-							}
-						}
-					}
-				}
-				else //przeciwnik porusza sie w osi pionowej
-				{
-					if (yDist > 0) //w gore
-					{
-						if (map[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || map[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
-						{
-							//moze sie normalnie poruszyc w wyznaczonym kierunku
-							enemies[i].position.Y--;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
-							map[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
-						}
-						else
-						{
-							if (xDist > 0) //w lewo
-							{
-								if (map[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || map[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.X--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									map[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
-								}
-
-							}
-							else //w prawo
-							{
-								if (map[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || map[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.X++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									map[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
-								}
-
-							}
-						}
-					}
-					else //w dol
-					{
-						if (map[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || map[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
-						{
-							//moze sie normalnie poruszyc w wyznaczonym kierunku
-							enemies[i].position.Y++;
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-							putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
-							map[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
-						}
-						else
-						{
-							if (xDist > 0) //w lewo
-							{
-								if (map[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || map[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.X--;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X + 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									map[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
-								}
-
-							}
-							else //w prawo
-							{
-								if (map[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || map[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
-								{
-									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
-									enemies[i].position.X++;
-									putCharXY(GetOnScreenPos(enemies[i].position).X, GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
-									putCharXY(GetOnScreenPos(enemies[i].position).X - 1, GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									map[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
-								}
-
-							}
-						}
-					}
-				}
-			}
-			//koniec ruchu
-			map[enemies[i].position.Y][enemies[i].position.X] = blok_przeciwnik;
-
-			setColor(0x0F);
-
-		}
-	}
-}
-
-int CalculateDistance(COORD a, COORD b)
-{
-	return sqrt(pow((a.X - b.X), 2) + pow((a.Y - b.Y), 2));
-}
-
-void ShowMenu()
+void menu::ShowMenu()
 {
 
 	system("CLS");
@@ -530,7 +37,7 @@ void ShowMenu()
 	short colors[5] = { 0 };
 	int i = 0;
 	unsigned char c;
-	DrawLogo();
+	gameEngine::DrawLogo();
 
 	do
 	{
@@ -556,29 +63,29 @@ void ShowMenu()
 
 
 
-		drawMenuItem(17, 7, colors[0], "Rozpocznij NOW¤ gr©");
+		console::drawMenuItem(17, 7, colors[0], "Rozpocznij NOW¤ gr©");
 		if (isSaved() && GameSaveLoad  &&  GameState == 0)
 		{
 
 
-			drawMenuItem(16, 12, colors[1], "Kontynuuj zapisan¥ gr©");
+			console::drawMenuItem(16, 12, colors[1], "Kontynuuj zapisan¥ gr©");
 		}
 		else
 		{
 
 
-			drawMenuItem(22, 12, colors[1], "Kontynuuj");
+			console::drawMenuItem(22, 12, colors[1], "Kontynuuj");
 		}
 
 
 
-		drawMenuItem(24, 17, colors[2], "Opcje");
+		console::drawMenuItem(24, 17, colors[2], "Opcje");
 
-		drawMenuItem(21, 22, colors[3], "Zakoäcz gr©");
+		console::drawMenuItem(21, 22, colors[3], "Zakoäcz gr©");
 
 
 
-		c = getKey();
+		c = console::getKey();
 
 
 		if (c == 72) //gora
@@ -617,11 +124,11 @@ void ShowMenu()
 				player.exp = 0; //start exp
 				player.level = 1;
 				EnemiesKilled = 0;
-				InitializeLevel(CurrentLevel);
+				map::InitializeLevel(CurrentLevel);
+				
 
 
-
-				Move();
+				player.Move();
 
 				return;
 				break;
@@ -631,8 +138,8 @@ void ShowMenu()
 				{
 					//gra sie toczy, zamknij menu
 					system("CLS");
-					RefreshMap();
-					RefreshGui();
+					gameEngine::RefreshMap();
+					gameEngine::RefreshGui();
 					return;
 				}
 				else
@@ -643,16 +150,16 @@ void ShowMenu()
 						if (!loadGame())
 						{
 							system("CLS");
-							drawMenuItem(25, 13, kolor_blok_przeciwnik, "Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"); //error
+							console::drawMenuItem(25, 13, kolor_blok_przeciwnik, "Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"); //error
 							system("pause");
 							system("CLS");
 							break;
 						}
 						GameState = 1;
 						system("CLS");
-						RefreshMap();
-						RefreshGui();
-						Move();
+						gameEngine::RefreshMap();
+						gameEngine::RefreshGui();
+						player.Move();
 					}
 
 				}
@@ -665,13 +172,13 @@ void ShowMenu()
 			case 2: //opcje
 				tmp = GameState; //zapis obecnego GameState do tymczasowej zmiennej
 				GameState = 2;
-				ShowOptions(tmp);
-				DrawLogo();  //ponowne wyœwietlenie grafiki logo
+				gameEngine::ShowOptions(tmp);
+				gameEngine::DrawLogo();  //ponowne wyœwietlenie grafiki logo
 				break;
 
 			case 3: //wyjdz
 
-				if (map[0][0] == blok_staly && GameSaveLoad || !GameSaveLoad)
+				if (area[0][0] == blok_staly && GameSaveLoad || !GameSaveLoad)
 					saveGame(); //zapisanie gry na wyjsciu jesli wczytana jest jakas mapa lub zmieniono opcje
 				exit(0);  //ostateczne wyjscie z programu
 				break;
@@ -682,7 +189,7 @@ void ShowMenu()
 		{
 			if (GameState == 1)
 			{
-				RefreshMap(); //kontunuuj gre
+				gameEngine::RefreshMap(); //kontunuuj gre
 				return;
 			}
 		}
@@ -690,119 +197,386 @@ void ShowMenu()
 	} while (1);
 }
 
-void Atack()
+
+int lastI = 0;
+char buf[256];
+
+void gameEngine::RefreshMap()
 {
-	int i = 0;
-	for (int i = 0; i<MaxEnemyNum; i++)  //petla po wszystkich przeciwnikach
-	{
-		if (enemies[i].position.X == 0 && enemies[i].position.Y == 0)
-			continue;    //pominiecie przeciwnika jesli nie istnieje
+	//system("CLS");
+	//InitGui();
+	//RefreshGui();
+	ClearLog();
 
-		int tmp = CalculateDistance(enemies[i].position, player.position);
-		int s = CalculateDistance(enemies[i].position, player.position);
-		if (CalculateDistance(enemies[i].position, player.position) <= 1) //jestli gracz jest obok przeciwnika
-		{
-			TotalTurns++;
-			Turns++;
-			int obrazenia = RandomInt(MinDamageMultiplier*player.damage, player.damage);
-
-
-			Log("Zadane obra¾enia", obrazenia);
-			if (enemies[i].hp <= obrazenia)//cios zabija przeciwnika
-			{
-				EnemiesKilled++;
-				COORD tmp = GetOnScreenPos(enemies[i].position);
-
-				putCharXY(tmp.X, tmp.Y, blok_pusty); //usuniecie przeciwnika z widoku
-
-													 //usuniecie przeciwnika z mapy
-				map[enemies[i].position.Y][enemies[i].position.X] = blok_pusty;
-				enemies[i].position.X = 0;
-				enemies[i].position.Y = 0;//ustawienie przeciwnika jako niezywego
-
-
-				Log("Zabiˆe˜ przeciwnika!", 0);
-
-
-				if (player.exp >= ExpToNextLevel)
-				{
-					//gracz awansuje na nowy level
-					player.level++;
-
-					player.exp = -1;
-
-					player.damage *= PlayerDamageMultiplier;
-
-					Log("Awansowaˆe˜ na wy¾szy poziom!!", 0);
-
-
-				}
-
-				player.exp++;
-				RefreshGui();
-			}
-			else //cios tylko uszkadza przeciwnika
-			{
-				enemies[i].hp -= obrazenia;
-
-			}
-
-
-			MoveEnemies();
-			RefreshGui();
-		}
-	}
-
-}
-
-void Death()
-{
-	GameState = 0;
-
-	ShowDeathScreen();
-
-}
-
-void RegenerateLife()
-{
-	if (Turns >= HPregenRate)
-	{
-		Turns = 0;
-		if (player.hp<PlayerStartHp)
-			player.hp++;
-	}
-	else
-		Turns++;
-}
-
-
-void PlacePortal()
-{
-	COORD tmp;
-	tmp.X = RandomInt(1, MapMaxX - 1);
-	tmp.Y = RandomInt(1, MapMaxY - 1);
-
-	unsigned char b = map[tmp.Y][tmp.X];
-	unsigned char c = blok_pusty;
-
-	if (b == c)
-	{
-		//map[tmp.X][tmp.Y] = blok_gracz;
-		portal = tmp;
-
+	if (GameState != 1)
 		return;
-	}
-	else
+
+	int x = 0;
+	int y = 0;
+
+
+	viewport.position.X = player.position.X - ViewportW / 2;
+	viewport.position.Y = player.position.Y - ViewportH / 2;
+
+	//InitGui();
+	/*system("CLS");
+	InitGui();
+	RefreshGui();*/
+
+	char c;
+	mapObject tmp;
+	for (y = viewport.position.Y; y < viewport.position.Y + ViewportH; y++)
 	{
-		PlacePortal();
+		for (x = viewport.position.X; x < viewport.position.X + ViewportW; x++)
+		{
+			tmp.position.X = x - ViewportH / 2;
+			tmp.position.Y = y;
+
+
+
+			c = area[y][x];
+			if (x < 0 || x >= MapMaxX || y < 0 || y >= MapMaxY)
+			{
+				console::setColor(kolor_tlo);
+				printf(" ");
+				console::setColor(0x0F);
+				continue;
+			}
+
+
+
+			switch (c)
+			{
+			case (char)blok_gracz:
+				console::setColor(kolor_gracz);
+				break;
+
+			case (char)(blok_zwykly) :
+				console::setColor(kolor_blok_zwykly);
+				break;
+			case (char)(blok_zwykly_ukruszony) :
+				console::setColor(kolor_blok_zwykly);
+				break;
+
+			case (char)blok_przeciwnik:
+				console::setColor(kolor_blok_przeciwnik);
+				break;
+
+			case (char)blok_staly:
+				console::setColor(kolor_blok_staly);
+				break;
+			}
+			//if (CalculateDistance(player,tmp)<=Visibility)
+			printf("%c", c);
+
+			console::setColor(0x0F);
+
+		}
+		printf("\n");
 	}
+	console::setColor(kolor_gracz);
+	console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, blok_gracz);
+
+
+	//czy portal jest w zasiegu mapy
+	tmp.position = map::GetOnScreenPos(portal.position);
+	if (tmp.position.X >= 0 && tmp.position.X <= ViewportW && tmp.position.Y >= 0 && tmp.position.Y <= ViewportH)
+	{
+		console::setColor(kolor_portal);
+		console::putCharXY(portal.position.X - viewport.position.X, portal.position.Y - viewport.position.Y, blok_portal);
+	}
+	console::setColor(0x0F);
+}
+
+void gameEngine::RefreshGui()
+{
+
+	if (GameState != 1)
+		return;
+	int hpPercent = player.hp * 15 / player.maxhp;
+	int i;
+
+
+
+
+
+	///==========HP=========
+
+	console::setColor(0x0c);
+	char c = 178;
+	for (int i = 1; i <= 15; i++)
+	{
+
+		if (i > hpPercent)
+		{
+			console::setColor(0x08);
+			c = 176;
+		}
+
+		console::putCharXY(ViewportW + 6 + i, 1, c);
+	}
+
+	console::setColor(0x0c);
+
+	snprintf(buf, sizeof buf, "%d ", player.hp);
+	console::putStrXY(ViewportW + 6 + 15 + 2, 1, buf);  //current level number
+
+														///==========LVL=========
+	int lvlPercent = player.exp * 15 / ExpToNextLevel;
+
+
+	console::setColor(0x0A);
+	c = 178;
+	for (int i = 1; i <= 15; i++)
+	{
+
+		if (i > lvlPercent)
+		{
+			console::setColor(0x08);
+			c = 176;
+		}
+
+		console::putCharXY(ViewportW + 6 + i, 3, c);
+	}
+	console::setColor(0x0A);
+
+	snprintf(buf, sizeof buf, "%d", player.level);
+	console::putStrXY(ViewportW + 7, 4, buf);  //current level number
+	console::setColor(0x08);
+
+
+	snprintf(buf, sizeof buf, "%d", player.level + 1);
+	console::putStrXY(ViewportW + 7 + 15 - 1, 4, buf); //next level number
+
+
+
+	console::setColor(0xD0);
+	snprintf(buf, sizeof buf, "%d - %d", (int)(player.damage * MinDamageMultiplier), player.damage);
+	console::putStrXY(ViewportW + 7, 6, buf); //player min and max damage number
+
+	snprintf(buf, sizeof buf, "%d", CurrentLevel + 1);
+	console::putStrXY(ViewportW + 21, 6, buf); //cave deep
+
+
+											   ///==========Portal=========
+
+
+	float maxDist = sqrt(pow(MapMaxX, 2) + pow(MapMaxY, 2))*0.75;
+	float dist = mathem::CalculateDistance(player.position, portal.position);
+	float tmp = (float)(dist / maxDist);
+	float val = tmp * 12;
+
+	console::setColor(0x08);
+	c = 176;
+	for (int i = 1; i <= 12; i++)
+	{
+
+		if (i > val)
+		{
+			console::setColor(kolor_portal);
+
+			c = 178;
+		}
+
+		console::putCharXY(ViewportW + 10 + 12 - i, 8, c);
+	}
+
+
+
+
+
+
+
+
+
 
 }
 
-void CheckPortal() //sprawdza, czy gracz nie  wszedl w portal
+void gameEngine::InitGui()
 {
-	if (player.position.X == portal.X && player.position.Y == portal.Y)
+	console::setColor(0x04);
+	console::putStrXY(ViewportW + 2, 1, "HP:");
+
+	console::setColor(0x02);
+	console::putStrXY(ViewportW + 2, 3, "LVL:");
+
+	console::setColor(0x05);
+	console::putStrXY(ViewportW + 2, 6, "DMG:"); console::putStrXY(ViewportW + 15, 6, "CAVE:");
+
+	console::setColor(0x09);
+	console::putStrXY(ViewportW + 2, 8, "Portal:");
+}
+
+void gameEngine::Log(char* text, int num)
+{
+
+
+
+	//	putStrXY(ViewportW + 7, 4, buf);  //current level number
+
+
+	if (num <0)
 	{
-		InitializeLevel(++CurrentLevel);
+		//gracz przyjal obrazenia
+		console::setColor(0x04);
+		snprintf(buf, sizeof buf, "%s: %d", text, -num);
 	}
+	else if (num > 0)
+	{
+		//gracz zadal obrazenia
+		console::setColor(0x0A);
+		snprintf(buf, sizeof buf, "%s: %d", text, num);
+
+	}
+	else
+	{
+		//inna wiadomosc
+		console::setColor(0x08);
+		snprintf(buf, sizeof buf, "%s", text);
+	}
+	console::putStrXY(ViewportW + 1, ViewportH - 1 - LogLevel, buf);
+	LogLevel++;
+}
+
+void gameEngine::ClearLog()
+{
+	LogLevel = 0;
+	int i = 0;
+	for (i = 9; i < ViewportH; i++)
+	{
+		console::putStrXY(ViewportW + 1, i, "                                      ");
+	}
+}
+
+void gameEngine::ShowDeathScreen()
+{
+	system("cls");
+	console::setColor(kolor_logo);
+	printf("                                     ____\n");
+	printf("                              __,---'     `--.__\n");
+	printf("                           ,-'                ; `.\n");
+	printf("                          ,'                  `--.`--.\n");
+	printf("                         ,'                       `._ `-.\n");
+	printf("                         ;                     ;     `-- ;\n");
+	printf("                       ,-'-_       _,-~~-.      ,--      `.\n");
+	printf("                       ;;   `-,;    ,'~`.__    ,;;;    ;  ;\n");
+	printf("                       ;;    ;,'  ,;;      `,  ;;;     `. ;\n");
+	printf("                       `:   ,'    `:;     __/  `.;      ; ;\n");
+	printf("                        ;~~^.   `.   `---'~~    ;;      ; ;\n");
+	printf("                        `,' `.   `.            .;;;     ;'\n");
+	printf("                        ,',^. `.  `._    __    `:;     ,'\n");
+	printf("                        `-' `--'    ~`--'~~`--.  ~    ,'\n");
+	printf("                       /;`-;_ ; ;. /. /   ; ~~`-.     ;\n");
+	printf("-._                   ; ;  ; `,;`-;__;---;      `----'\n");
+	printf("   `--.__             ``-`-;__;:  ;  ;__;\n");
+	printf(" ...     `--.__                `-- `-'\n");
+	printf("`--.:::...     `--.__                ____\n");
+	printf("    `--:::::--.      `--.__    __,--'    `.\n");
+	printf("        `--:::`;....       `--'       ___  `.\n");
+	printf("            `--`-:::...     __           )  ;\n");
+	printf("                  ~`-:::...   `---.      ( ,'\n");
+	printf("                      ~`-:::::::::`--.   `-.\n");
+	printf("                          ~`-::::::::`.    ;\n");
+	printf("                              ~`--:::,'   ,'\n");
+	printf("                                   ~~`--'~\n");
+
+
+	//przezyles xxx itd.
+
+	console::setColor(kolor_menu_aktywny);
+	snprintf(buf, sizeof buf, "Doszedˆe˜ do jaskini: ", CurrentLevel + 1);
+	console::putStrXY(62, 3, buf);
+	console::setColor(0xD0);
+	snprintf(buf, sizeof buf, "%d", CurrentLevel + 1);
+	console::putStrXY(62 + 23, 3, buf);
+
+	console::setColor(kolor_menu_aktywny);
+
+	snprintf(buf, sizeof buf, "Osi¥gn¥ˆe˜ poziom: %d", player.level);
+	console::putStrXY(62, 5, buf);
+
+	snprintf(buf, sizeof buf, "Zabiˆe˜ %d przeciwnik¢w", EnemiesKilled);
+	console::putStrXY(62, 7, buf);
+
+	snprintf(buf, sizeof buf, "Poruszˆe˜ si© %d razy", TotalTurns);
+	console::putStrXY(62, 9, buf);
+
+}
+
+void gameEngine::ShowOptions(int initialGameState)
+{
+	system("cls");
+	unsigned char menuIndex = 0;
+	unsigned char c;
+
+
+	if (GameSaveLoad)
+		menuIndex = 1;
+	else
+		menuIndex = 0;
+
+
+	do
+	{
+
+
+		console::drawMenuItem(16, 12, kolor_menu, "Obsˆuga zapisu i wczytywania gry");
+		if (menuIndex == 1)
+			console::drawMenuItem(16 + 37, 12, 0x0A, "TAK"); //lewo
+		else
+			console::drawMenuItem(16 + 37, 12, 0x0A, "NIE"); //prawo
+
+
+
+		c = console::getKey();
+
+
+		if (c == 75) //lewo
+		{
+			if (menuIndex < (2 - 1))
+			{
+				GameSaveLoad = 1;
+				menuIndex++;
+			}
+
+		}
+
+		if (c == 77)//prawo
+		{
+			if (menuIndex >0)
+			{
+				GameSaveLoad = 0;
+				menuIndex--;
+
+			}
+		}
+
+		if (c == 27) //escape pressed
+		{
+			GameState = initialGameState;
+			system("CLS");
+
+			return;
+		}
+
+
+	} while (1);
+}
+
+void gameEngine::DrawLogo()
+{
+	console::setColor(kolor_logo);
+
+
+	console::putStrXY(1, 0, "_________                    ___________             .__              ");
+	console::putStrXY(1, 1, "\\_   ___ \\_____ ___  __ ____ \\_   _____/__  ________ |  |   ___________  ___________ ");
+	console::putStrXY(1, 2, "/    \\  \\/\\__  \\\\  \\/ // __ \\ |    __)_\\  \\/  |____ \\|  |  /  _ \\_  __ \\/ __ \\_  __ \\");
+	console::putStrXY(1, 3, "\\     \\____/ __ \\\\   /\\  ___/ |        \\>    <|  |_> >  |_(  <_> )  | \\|  ___/|  | \\/");
+	console::putStrXY(1, 4, " \\______  (____  /\\_/  \\___  >_______  /__/\\_ \\   __/|____/\\____/|__|   \\___  >__|   ");
+	console::putStrXY(1, 5, "        \\/     \\/          \\/        \\/      \\/__|                          \\/       ");
+
+
+	console::setColor(0x08);
+	console::putStrXY(60, 20, "by  Jan Sudczak & Filip Strozik");
+	console::setColor(0x0F);
 }

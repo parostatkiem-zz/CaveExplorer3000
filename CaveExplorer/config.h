@@ -13,7 +13,7 @@
 #include "console.h"
 #include "gameEngine.h"
 #include "gameSave.h" 
-#include "graphics.h"
+#include "mapObjects.h"
 
 
 
@@ -77,7 +77,7 @@
 
 
 //globalna definicja zmiennych
-extern unsigned char map[200][200];
+extern unsigned char area[200][200];
 extern unsigned int GameState;
 extern unsigned int LogLevel;
 extern unsigned int TotalTurns;
@@ -86,27 +86,12 @@ extern unsigned int EnemiesKilled;
 
 extern unsigned int GameSaveLoad;
 
-extern COORD viewport;
-extern COORD portal;
-class playerClass
-{
-public:
-	int hp;
-	int maxhp;
-	int damage;
-	COORD position;
-	int level;
-	int exp;
-
-};
+extern mapObject viewport;
+extern mapObject portal;
+extern enemy enemies[MaxEnemyNum];
 extern playerClass player;
-class Enemy
-{
-public:
-	int hp;
-	int damage;
-	COORD position;
-	
-};
-extern Enemy enemies[MaxEnemyNum];
 
+
+extern unsigned int tmp;
+extern unsigned int Turns;
+extern int CaveSegments;

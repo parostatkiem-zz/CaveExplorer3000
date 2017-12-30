@@ -1,7 +1,6 @@
 #include "config.h"
 
-void SetConsoleWindowSize(int x, int y)
-{
+void console::SetConsoleWindowSize(int x, int y) {
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
 
@@ -46,53 +45,50 @@ void SetConsoleWindowSize(int x, int y)
 
 }
 
-void initScreen(void)
-{
+void console::initScreen(void) {
 
 
 
-	HANDLE wh2 = GetStdHandle(STD_OUTPUT_HANDLE);
+		HANDLE wh2 = GetStdHandle(STD_OUTPUT_HANDLE);
 
 
 
 
 
-	system("Title CaveExplorer by Jan Sudczak/Filip Strózik"); //ustawianie tytu³u okna
+		system("Title CaveExplorer by Jan Sudczak/Filip Strózik"); //ustawianie tytu³u okna
 
-													 //wy³¹czenie migania kursora
-	CONSOLE_CURSOR_INFO cciInfo;
-	cciInfo.dwSize = 1;
-	cciInfo.bVisible = 0;
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cciInfo);
+																   //wy³¹czenie migania kursora
+		CONSOLE_CURSOR_INFO cciInfo;
+		cciInfo.dwSize = 1;
+		cciInfo.bVisible = 0;
+		SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cciInfo);
 
-	//Ustawianie czcionki na Terminal 8x12
-	CONSOLE_FONT_INFOEX info = { 0 };
-	info.cbSize = sizeof(info);
-	info.dwFontSize.X = 8;
-	info.dwFontSize.Y = 12;
-	info.FontWeight = FW_NORMAL;
-	wcscpy_s(info.FaceName, L"Terminal");
-	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), NULL, &info);
-
-
-	////ustawianie rozmiaru bufora okna
-	COORD bufferSize = { 120, 31 };
-	SetConsoleScreenBufferSize(wh2, bufferSize);
-
-	//SMALL_RECT windowSize = { 0, 0, 120, 29 };
-	//SetConsoleWindowInfo(wh2, 1, &windowSize);
-
-	//ShowWindow(GetConsoleWindow(), SW_NORMAL);
-
-	SetConsoleWindowSize(120, 31); //ustawianie rozmiaru ekranu
+		//Ustawianie czcionki na Terminal 8x12
+		CONSOLE_FONT_INFOEX info = { 0 };
+		info.cbSize = sizeof(info);
+		info.dwFontSize.X = 8;
+		info.dwFontSize.Y = 12;
+		info.FontWeight = FW_NORMAL;
+		wcscpy_s(info.FaceName, L"Terminal");
+		SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), NULL, &info);
 
 
-	system("chcp 852"); //na koniec kodowanie. Jest to raczej niepotrzebne, ale dam ¿eby by³o na wszelki wypadek :D
-	system("cls");
-}
+		////ustawianie rozmiaru bufora okna
+		COORD bufferSize = { 120, 31 };
+		SetConsoleScreenBufferSize(wh2, bufferSize);
 
-void putCharXY(int x, int y, unsigned char z)
-{
+		//SMALL_RECT windowSize = { 0, 0, 120, 29 };
+		//SetConsoleWindowInfo(wh2, 1, &windowSize);
+
+		//ShowWindow(GetConsoleWindow(), SW_NORMAL);
+		console::SetConsoleWindowSize(120, 31); //ustawianie rozmiaru ekranu
+
+
+		system("chcp 852"); //na koniec kodowanie. Jest to raczej niepotrzebne, ale dam ¿eby by³o na wszelki wypadek :D
+		system("cls");
+	}
+
+void console::putCharXY(int x, int y, unsigned char z){
 	COORD a;
 	a.X = x;
 	a.Y = y;
@@ -103,23 +99,23 @@ void putCharXY(int x, int y, unsigned char z)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), a);
 }
 
-void putStrXY(int x, int y, const char *s)
+void console::putStrXY(int x, int y, const char * s)
 {
 	while (*s)
 		putCharXY(x++, y, *s++);
 }
 
-void setColor(unsigned short id)
+void console::setColor(unsigned short id)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), id);
 }
 
-char getKey(void)
+char console::getKey(void)
 {
 	return _getch();
 }
 
-void drawMenuItem(int x, int y, unsigned short c, const char *s)
+void console::drawMenuItem(int x, int y, unsigned short c, const char *s)
 {
 
 	setColor(c);
@@ -165,3 +161,4 @@ void drawMenuItem(int x, int y, unsigned short c, const char *s)
 	setColor(0x0F);
 
 }
+

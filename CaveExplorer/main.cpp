@@ -1,7 +1,7 @@
 //CAVE EXPLORER 
 #include "config.h"
 
-unsigned char map[200][200];
+unsigned char area[200][200];
 unsigned int GameState = 0;
 unsigned int LogLevel = 0;
 unsigned int TotalTurns = 0;
@@ -11,14 +11,13 @@ unsigned int EnemiesKilled = 0;
 unsigned int GameSaveLoad = 1;
 
 playerClass player;
-COORD viewport;
-COORD portal;
-Enemy enemies[MaxEnemyNum] ;
+mapObject viewport;
+mapObject portal;
+enemy enemies[MaxEnemyNum] ;
 
 int main()
 {
-
-	initScreen();
+	console::initScreen();
 
 
 
@@ -26,7 +25,7 @@ int main()
 
 
 
-	ShowMenu();
+	menu::ShowMenu();
 
 
 	system("PAUSE");
