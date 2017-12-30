@@ -23,7 +23,7 @@ void enemy::MoveEnemies()
 				if (player.hp - obrazenia > 0)
 				{
 					player.hp -= obrazenia; //gracz otrzymuje cios
-					Log("Otrzymaˆe˜ obra¾enia", -obrazenia);
+					gameEngine::Log("Otrzymaˆe˜ obra¾enia", -obrazenia);
 				}
 				else
 					player.Death();   //gracz umiera
@@ -310,13 +310,13 @@ void playerClass::Move()
 		{
 			if (GameState == 1)
 			{
-				ClearLog();
+				gameEngine::ClearLog();
 				RegenerateLife();
 				player.TryMove(znak);
 				map::CheckPortal();
 				enemy::MoveEnemies();
 				map::CheckRefresh();
-				RefreshGui();
+				gameEngine::RefreshGui();
 			}
 
 		}
@@ -329,7 +329,7 @@ void playerClass::Move()
 		{
 			if (GameState == 1)
 			{
-				ClearLog();
+				gameEngine::ClearLog();
 				RegenerateLife();
 				Atack();
 			}
@@ -352,7 +352,7 @@ void map::CheckRefresh()
 		|| player.position.Y - viewport.position.Y >= ViewportH - DTETR)
 	{
 
-		RefreshMap();
+		gameEngine::RefreshMap();
 
 	}
 }
@@ -432,9 +432,9 @@ void map::InitializeLevel(int level)
 
 	PlacePortal();
 
-	RefreshMap();
-	InitGui();
-	RefreshGui();
+	gameEngine::RefreshMap();
+	gameEngine::InitGui();
+	gameEngine::RefreshGui();
 
 
 
@@ -549,7 +549,7 @@ void playerClass::Atack()
 			int obrazenia = mathem::RandomInt(MinDamageMultiplier*player.damage, player.damage);
 
 
-			Log("Zadane obra¾enia", obrazenia);
+			gameEngine::Log("Zadane obra¾enia", obrazenia);
 			if (enemies[i].hp <= obrazenia)//cios zabija przeciwnika
 			{
 				EnemiesKilled++;
@@ -563,7 +563,7 @@ void playerClass::Atack()
 				enemies[i].position.Y = 0;//ustawienie przeciwnika jako niezywego
 
 
-				Log("Zabiˆe˜ przeciwnika!", 0);
+				gameEngine::Log("Zabiˆe˜ przeciwnika!", 0);
 
 
 				if (player.exp >= ExpToNextLevel)
@@ -575,13 +575,13 @@ void playerClass::Atack()
 
 					player.damage *= PlayerDamageMultiplier;
 
-					Log("Awansowaˆe˜ na wy¾szy poziom!!", 0);
+					gameEngine::Log("Awansowaˆe˜ na wy¾szy poziom!!", 0);
 
 
 				}
 
 				player.exp++;
-				RefreshGui();
+				gameEngine::RefreshGui();
 			}
 			else //cios tylko uszkadza przeciwnika
 			{
@@ -591,7 +591,7 @@ void playerClass::Atack()
 
 
 			enemy::MoveEnemies();
-			RefreshGui();
+			gameEngine::RefreshGui();
 		}
 	}
 
@@ -602,7 +602,7 @@ void playerClass::Death()
 {
 	GameState = 0;
 
-	ShowDeathScreen();
+	gameEngine::ShowDeathScreen();
 
 }
 

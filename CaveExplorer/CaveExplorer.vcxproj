@@ -146,14 +146,12 @@
     <ClInclude Include="console.h" />
     <ClInclude Include="gameEngine.h" />
     <ClInclude Include="gameSave.h" />
-    <ClInclude Include="graphics.h" />
     <ClInclude Include="mapObjects.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="console.cpp" />
     <ClCompile Include="gameEngine.cpp" />
     <ClCompile Include="gameSave.cpp" />
-    <ClCompile Include="graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapObjects.cpp" />
   </ItemGroup>
