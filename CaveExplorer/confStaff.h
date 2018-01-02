@@ -14,6 +14,7 @@ public:
 
 	container();
 	container(std::string ke, type va);
+	~container();
 
 	void add(std::string ke, type va);
 	void clearContainer();
@@ -36,12 +37,15 @@ public:
 
 	//constructors
 	cml(std::string path);
+	type findKey(std::string request);
+	void loadSection(std::string request);
+	void loadKey(std::string request);
 
 	//public methods
 	bool good() const;
 };
 
-void wypisz(container<int> con) {
+void wypisz(container<int>& con) {
 	for (int i = 0; i < con.lenght; i++)
 		std::cout << i << ": " << con.key[i] << " - " << con.value[i] << std::endl;
 }
@@ -52,6 +56,7 @@ void test() {
 	con1.add("drugi", 2);
 	wypisz(con1);
 	con1.clearContainer();
+	con1.add("pierwszy", 1);
 
 	container<int> con2("pierwszy", 1);
 	con2.add("drugi", 2);
@@ -59,22 +64,7 @@ void test() {
 	std::cout << con2.find("zwracaZeroczyli type()") << std::endl;
 
 	system("pause");
-}
-
-
-
-
-
-//cml public construktor
-template<class type>
-inline cml<type>::cml(std::string path){
-	file.open(path, ios::in);
-}
-
-template<class type>
-inline bool cml<type>::good() const{
-	return file.good();
-}
+ }
 
 
 //Container's public constructors
@@ -93,6 +83,15 @@ inline container<type>::container(std::string ke, type va){
 }
 
 template<class type>
+inline container<type>::~container(){
+	if (lenght) {
+		deleteIf(value);
+		deleteIf(key);
+		lenght = 0;
+	}
+}
+
+template<class type>
 inline void container<type>::add(std::string ke, type va){
 	type* newValue = new type[lenght + 1];
 	std::string* newKey = new std::string[lenght + 1];
@@ -100,9 +99,11 @@ inline void container<type>::add(std::string ke, type va){
 	coppy<type>(value, newValue, lenght);
 	coppy<std::string>(key, newKey, lenght);
 
-	deleteIf<std::string>(key);
-	deleteIf<type>(value);
-
+	if (lenght) {
+		deleteIf<std::string>(key);
+		deleteIf<type>(value);
+	}
+	
 	value = newValue; value[lenght] = va;
 	key = newKey; key[lenght] = ke;
 	lenght++;
@@ -135,4 +136,16 @@ template<class typeToCp>
 inline void container<type>::coppy(typeToCp * from, typeToCp * to, unsigned int howMany){
 	for (int i = 0; i < howMany; i++)
 		to[i] = from[i];
+}
+
+
+//cml public construktor
+template<class type>
+inline cml<type>::cml(std::string path) {
+	file.open(path, ios::in | ios::binary);
+}
+
+template<class type>
+inline bool cml<type>::good() const {
+	return file.good();
 }
