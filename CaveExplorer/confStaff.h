@@ -16,12 +16,15 @@ public:
 	container(std::string ke, type va);
 
 	void add(std::string ke, type va);
+	void clearContainer();
+	type find(std::string requestValue);
 
 private:
-	void deleteIf(type* toDel);
-	void deleteIf(std::string* toDel);
-	void coppy(type * from, type * to, unsigned int howMany);
-	void coppy(std::string * from, std::string * to, unsigned int howMany);
+	template<class typeToDel>
+	void deleteIf(typeToDel* variable);
+
+	template<class typeToCp>
+	void coppy(typeToCp* from, typeToCp* to, unsigned int howMany);
 };
 
 template <class type>
@@ -48,10 +51,12 @@ void test() {
 	con1.add("pierwszy", 1);
 	con1.add("drugi", 2);
 	wypisz(con1);
+	con1.clearContainer();
 
 	container<int> con2("pierwszy", 1);
 	con2.add("drugi", 2);
 	wypisz(con2);
+	std::cout << con2.find("zwracaZeroczyli type()") << std::endl;
 
 	system("pause");
 }
@@ -92,11 +97,11 @@ inline void container<type>::add(std::string ke, type va){
 	type* newValue = new type[lenght + 1];
 	std::string* newKey = new std::string[lenght + 1];
 
-	coppy(value, newValue, lenght);
-	coppy(key, newKey, lenght);
+	coppy<type>(value, newValue, lenght);
+	coppy<std::string>(key, newKey, lenght);
 
-	deleteIf(value);
-	deleteIf(key);
+	deleteIf<std::string>(key);
+	deleteIf<type>(value);
 
 	value = newValue; value[lenght] = va;
 	key = newKey; key[lenght] = ke;
@@ -104,24 +109,30 @@ inline void container<type>::add(std::string ke, type va){
 }
 
 template<class type>
-inline void container<type>::deleteIf(type * toDel){
-	if (toDel) delete[]toDel;
-}
-template<class type>
-inline void container<type>::deleteIf(std::string * toDel) {
-	if (toDel) delete[]toDel;
+inline void container<type>::clearContainer(){
+	deleteIf<type>(value);
+	deleteIf<std::string>(key);
+	lenght = NULL;
 }
 
 template<class type>
-inline void container<type>::coppy(type * from, type * to, unsigned int howMany){
-	for (int i = 0; i < howMany; i++) 
-		to[i] = from[i];
+inline type container<type>::find(std::string requestValue){
+	for (int i = 0; i < lenght; i++) 
+		if (requestValue == key[i]) return value[i];
+	return type();
 }
+
 template<class type>
-inline void container<type>::coppy(std::string * from, std::string * to, unsigned int howMany) {
+template<class typeToDel>
+inline void container<type>::deleteIf(typeToDel * variable){
+	if (variable)
+		delete[] variable;
+
+}
+
+template<class type>
+template<class typeToCp>
+inline void container<type>::coppy(typeToCp * from, typeToCp * to, unsigned int howMany){
 	for (int i = 0; i < howMany; i++)
 		to[i] = from[i];
 }
-
-
-
