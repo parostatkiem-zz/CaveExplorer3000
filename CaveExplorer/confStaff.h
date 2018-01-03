@@ -36,7 +36,7 @@ class cml
 	//private methods
 	void clearContainer();
 
-	template<typename t>
+	template<class t>
 	t convertToType(std::string request);
 
 	
@@ -48,6 +48,7 @@ public:
 	cml(std::string path);
 
 	//public methods
+	type find(std::string request);
 	bool good() const;
 	type findKey(std::string request);
 	void loadSection(std::string request);
@@ -135,6 +136,14 @@ inline cml<type>::cml(std::string path) {
 	file.open(path, std::ios::in | std::ios::binary);
 }
 
+
+
+template<class type>
+inline type cml<type>::find(std::string request)
+{
+	return data.find(request);
+}
+
 template<class type>
 inline bool cml<type>::good() const {
 	return file.good();
@@ -182,14 +191,8 @@ inline void cml<type>::loadSection(std::string request){
 }
 
 template<class type>
-inline type cml<type>::readKey(std::string requestKey, std::string requestSection)
-{
-	return type();
-}
-
-template<>
-template<>
-inline int cml<int>::convertToType(std::string request)
+template<class t>
+inline t cml<type>::convertToType(std::string request)
 {
 	int turnType = 0;
 	int multiplier = 1;

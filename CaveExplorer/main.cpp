@@ -30,24 +30,18 @@ void test() {
 	wypisz(con1);
 	con1.clearContainer();
 	con1.add("pierwszy", 1);
+	
 
 	container<int> con2("pierwszy", 1);
 	con2.add("drugi", 2);
 	wypisz(con2);
+	std::cout << con2.find("drugi") << std::endl;
 	std::cout << con2.find("zwracaZeroczyli type()") << std::endl;
 
 	container<std::string> con3("pierwszy", "jeden");
 	wypisz(con3);
 
 	//===========cml
-	std::string a = "[kapacity] asdasdd asdadwqe [krowa]";
-
-	std::cout << a.find("[maciora]") << std::endl;
-
-	int inta = a[2];
-
-	std::cout << a[2] << "" << inta << std::endl;
-
 	cml<std::string> cml1("C:\\Users\\filip\\Documents\\CaveExplorer\\Language\\pl.txt");
 	cml1.loadSection("pierwszyDzial");
 	wypisz(cml1.data);
@@ -55,6 +49,8 @@ void test() {
 	cml<int> cml2("C:\\Users\\filip\\Documents\\CaveExplorer\\Language\\pl.txt");
 	cml2.loadSection("drugiDzial");
 	wypisz(cml2.data);
+
+	std::cout << cml2.find("wiersz3") << std::endl;
 
 	system("pause");
 }
