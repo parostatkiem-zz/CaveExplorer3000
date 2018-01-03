@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 
-template <class type>
+template <class type = std::string>
 class container
 {
 public:
@@ -28,46 +28,35 @@ private:
 	void coppy(typeToCp* from, typeToCp* to, unsigned int howMany);
 };
 
-template <class type>
+template <class type = std::string>
 class cml
 {
 	std::fstream file;
+
+	//private methods
+	void clearContainer();
+
+	template<typename t>
+	t convertToType(std::string request);
+
+	
+
 public:
 	container <type> data;
 
 	//constructors
 	cml(std::string path);
-	type findKey(std::string request);
-	void loadSection(std::string request);
-	void loadKey(std::string request);
 
 	//public methods
 	bool good() const;
+	type findKey(std::string request);
+	void loadSection(std::string request);
+	type readKey(std::string requestKey, std::string requestSection = NULL);
+	void changeFile(std::string path);
 };
 
-void wypisz(container<int>& con) {
-	for (int i = 0; i < con.lenght; i++)
-		std::cout << i << ": " << con.key[i] << " - " << con.value[i] << std::endl;
-}
 
-void test() {
-	container<int> con1;
-	con1.add("pierwszy", 1);
-	con1.add("drugi", 2);
-	wypisz(con1);
-	con1.clearContainer();
-	con1.add("pierwszy", 1);
-
-	container<int> con2("pierwszy", 1);
-	con2.add("drugi", 2);
-	wypisz(con2);
-	std::cout << con2.find("zwracaZeroczyli type()") << std::endl;
-
-	system("pause");
- }
-
-
-//Container's public constructors
+//-------------------------------------Container-------------------------------------
 template<class type>
 inline container<type>::container(){
 	key = nullptr; value = nullptr; lenght = 0;
@@ -139,13 +128,88 @@ inline void container<type>::coppy(typeToCp * from, typeToCp * to, unsigned int 
 }
 
 
-//cml public construktor
+
+//-------------------------------------cml------------------------------------- 
 template<class type>
 inline cml<type>::cml(std::string path) {
-	file.open(path, ios::in | ios::binary);
+	file.open(path, std::ios::in | std::ios::binary);
 }
 
 template<class type>
 inline bool cml<type>::good() const {
 	return file.good();
 }
+
+template<class type>
+inline void cml<type>::loadSection(std::string request){
+	file.seekg(0);
+	std::string line;
+	std::string reqSec = "[" + request + "]";
+	int i = 0;
+
+	do {
+		std::getline(file, line);
+	} while (line.find(reqSec));
+
+	do {
+		
+
+		std::getline(file, line);
+		if (line[0] == '[') break;
+		if (line[0] == '/' && line[1] == '/') continue;
+
+		std::string keyBuf = "";
+		std::string valBuf = ""; 
+		int flag = 0;
+		for (i = 0; i < line.length(); i++) {
+
+			if (line[i] == '<') flag = 1;
+			else if (line[i] == '>')flag = 0;
+			else if (flag == 1) keyBuf += line[i];
+			
+			if (line[i] == '\"' && flag == 2) flag = 0;
+			else if (line[i] == '\"') flag = 2;
+			else if (flag == 2) valBuf += line[i];
+		}
+		data.add(keyBuf, convertToType<type>(valBuf));
+	} while (!(
+		line[0] == '[' &&
+		line[1] == 'e' &&
+		line[2] == 'n' &&
+		line[3] == 'd' &&
+		line[4] == '['
+		));
+}
+
+template<class type>
+inline type cml<type>::readKey(std::string requestKey, std::string requestSection)
+{
+	return type();
+}
+
+template<>
+template<>
+inline int cml<int>::convertToType(std::string request)
+{
+	int turnType = 0;
+	int multiplier = 1;
+	for (int i = request.length() - 1; i >= 0; i--) {
+		if (request[i] == '-') {
+			turnType *= -1;
+			continue;
+		}
+		turnType += (request[i] - 48) * multiplier;
+		multiplier *= 10;
+	}
+
+	return turnType;
+}
+
+template<>
+template<>
+inline std::string cml<std::string>::convertToType(std::string request)
+{
+	return request;
+}
+
+

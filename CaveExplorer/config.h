@@ -75,6 +75,9 @@
 #define kolor_menu 0x05
 #define kolor_logo 0x05
 
+//scie¿ki do plików
+#define language_path "Language\\"
+
 
 //globalna definicja zmiennych
 extern unsigned char area[200][200];
