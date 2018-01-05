@@ -77,6 +77,7 @@
 
 //scie¿ki do plików
 #define language_path "Language\\"
+#define language_extension ".cml"
 
 
 //globalna definicja zmiennych
