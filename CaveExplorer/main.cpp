@@ -1,5 +1,6 @@
 //CAVE EXPLORER 
 #include "config.h"
+#include "confStaff.h"
 
 unsigned char area[200][200];
 unsigned int GameState = 0;
