@@ -613,6 +613,7 @@ void playerClass::Atack()
 
 				gameEngine::Log("Zabiˆe˜ przeciwnika!", 0);
 
+				player.PickGold();
 
 				if (player.exp >= ExpToNextLevel)
 				{
