@@ -3,16 +3,6 @@
 void console::SetConsoleWindowSize(int x, int y) {
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-
-
-
-	// If either dimension is greater than the largest console window we can have,
-	// there is no point in attempting the change.
-
-
-
-
-
 	CONSOLE_SCREEN_BUFFER_INFO bufferInfo;
 	GetConsoleScreenBufferInfo(h, &bufferInfo);
 

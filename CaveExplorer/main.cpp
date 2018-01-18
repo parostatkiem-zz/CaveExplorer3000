@@ -6,6 +6,7 @@
 playerClass player;
 mapObject viewport;
 mapObject portal;
+shop theShop;
 enemy enemies[MaxEnemyNum] ;
 gameEngine TheGameEngine;
 

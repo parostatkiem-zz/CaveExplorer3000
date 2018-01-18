@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <fstream>
-
+#include <vector>
 
 
 #include "console.h"
@@ -35,7 +35,7 @@
 #define block_enemy 0xFE
 #define block_item 0xCF
 #define block_portal 0xDB
-
+#define block_shop 0x0F 
 
 
 //tworzenie jaskiñ
@@ -72,6 +72,7 @@
 #define color_block_enemy 0x04
 #define color_background 0x00 
 #define color_portal 0x09
+#define color_shop 0x06
 
 #define color_menu_active 0x0D
 #define color_menu 0x05
@@ -89,6 +90,7 @@ extern mapObject portal;
 extern enemy enemies[MaxEnemyNum];
 extern playerClass player;
 extern gameEngine TheGameEngine;
+extern shop theShop;
 
 
 

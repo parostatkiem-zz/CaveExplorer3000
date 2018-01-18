@@ -480,6 +480,8 @@ void map::InitializeLevel(int level)
 
 	PlacePortal();
 
+	PlaceShop();
+
 	gameEngine::RefreshMap();
 	gameEngine::InitGui();
 	gameEngine::RefreshGui();
@@ -559,8 +561,8 @@ COORD map::GetOnScreenPos(COORD p)
 void map::PlacePortal()
 {
 	mapObject tmp;
-	tmp.position.X = mathem::RandomInt(2, MapMaxX - 1);
-	tmp.position.Y = mathem::RandomInt(2, MapMaxY - 1);
+	tmp.position.X = mathem::RandomInt(8, MapMaxX - 7);
+	tmp.position.Y = mathem::RandomInt(8, MapMaxY - 7);
 
 	unsigned char b = TheGameEngine.area[tmp.position.Y][tmp.position.X];
 	unsigned char c = block_empty;
@@ -575,6 +577,29 @@ void map::PlacePortal()
 	else
 	{
 		PlacePortal();
+	}
+
+}
+
+//DO MAPY
+void map::PlaceShop()
+{
+	shop tmp;
+	tmp.position.X = mathem::RandomInt(portal.position.X-5, portal.position.X + 5);
+	tmp.position.Y = mathem::RandomInt(portal.position.Y - 5, portal.position.Y + 5);
+
+	unsigned char b = TheGameEngine.area[tmp.position.Y][tmp.position.X];
+	unsigned char c = block_empty;
+
+	if (b == c && portal.position.X!=tmp.position.X && portal.position.Y != tmp.position.Y)
+	{
+		theShop.position = tmp.position;
+
+		return;
+	}
+	else
+	{
+		PlaceShop();
 	}
 
 }

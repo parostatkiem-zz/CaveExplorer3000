@@ -1,5 +1,8 @@
 #pragma once
 #include "config.h"
+#include<iostream>
+using namespace std;
+
 
 class mapObject
 {
@@ -48,6 +51,30 @@ public:
 	static COORD GetOnScreenPos(COORD p);
 	static void PlacePortal();
 	static void CheckPortal();
+	static void PlaceShop();
 };
 
+enum weaponTypeEnum
+{
+	weapon = 0,
+	armor = 1
+
+	//mo¿na dodaæ wiêcej w przysz³oœci
+};
+class shopItem
+{
+public:
+	weaponTypeEnum type;
+	int price = 0;
+	int bonus = 0;
+	string bonusUnit = "DMG";
+};
+
+class shop : public mapObject
+{
+	vector<weaponTypeEnum> alreadyBoughtTypes;
+	vector<shopItem> items;
+
+	void flushItems();
+};
 

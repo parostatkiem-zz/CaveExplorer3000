@@ -285,6 +285,14 @@ void gameEngine::RefreshMap()
 		console::setColor(color_portal);
 		console::putCharXY(portal.position.X - viewport.position.X, portal.position.Y - viewport.position.Y, block_portal);
 	}
+
+	//czy sklep jest w zasiegu mapy
+	tmp.position = map::GetOnScreenPos(theShop.position);
+	if (tmp.position.X >= 0 && tmp.position.X <= ViewportW && tmp.position.Y >= 0 && tmp.position.Y <= ViewportH)
+	{
+		console::setColor(color_shop);
+		console::putCharXY(theShop.position.X - viewport.position.X, theShop.position.Y - viewport.position.Y, block_shop);
+	}
 	console::setColor(0x0F);
 }
 

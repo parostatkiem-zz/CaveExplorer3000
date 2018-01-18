@@ -52,7 +52,7 @@ public:
 	static void ShowOptions(int initialGameState);
 
 	static void DrawLogo();
-	
+	//static void ShowShopMenu(shop* theShop);
 	gameEngine()
 	{
 		GameState = 0;
