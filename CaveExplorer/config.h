@@ -89,6 +89,4 @@ extern playerClass player;
 extern gameEngine TheGameEngine;
 
 
-extern unsigned int tmp;
-extern unsigned int Turns;
-extern int CaveSegments;
+

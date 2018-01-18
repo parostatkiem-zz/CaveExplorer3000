@@ -208,7 +208,7 @@ int playerClass::TryMove(char direction)
 		if (TheGameEngine.area[player.position.Y - 1][player.position.X] == block_empty || TheGameEngine.area[player.position.Y - 1][player.position.X] == block_normal || TheGameEngine.area[player.position.Y - 1][player.position.X] == block_normal_damaged)
 		{
 			TheGameEngine.TotalTurns++;
-			Turns++;
+			TheGameEngine.Turns++;
 			if (TheGameEngine.area[player.position.Y - 1][player.position.X] == block_normal)
 			{
 				//nalezy ukruszyc blok
@@ -229,7 +229,7 @@ int playerClass::TryMove(char direction)
 		if (TheGameEngine.area[player.position.Y + 1][player.position.X] == block_empty || TheGameEngine.area[player.position.Y + 1][player.position.X] == block_normal || TheGameEngine.area[player.position.Y + 1][player.position.X] == block_normal_damaged)
 		{
 			TheGameEngine.TotalTurns++;
-			Turns++;
+			TheGameEngine.Turns++;
 			if (TheGameEngine.area[player.position.Y + 1][player.position.X] == block_normal)
 			{
 				//nalezy ukruszyc blok
@@ -249,7 +249,7 @@ int playerClass::TryMove(char direction)
 		if (TheGameEngine.area[player.position.Y][player.position.X + 1] == block_empty || TheGameEngine.area[player.position.Y][player.position.X + 1] == block_normal || TheGameEngine.area[player.position.Y][player.position.X + 1] == block_normal_damaged)
 		{
 			TheGameEngine.TotalTurns++;
-			Turns++;
+			TheGameEngine.Turns++;
 			if (TheGameEngine.area[player.position.Y][player.position.X + 1] == block_normal)
 			{
 				//nalezy ukruszyc blok
@@ -269,7 +269,7 @@ int playerClass::TryMove(char direction)
 		if (TheGameEngine.area[player.position.Y][player.position.X - 1] == block_empty || TheGameEngine.area[player.position.Y][player.position.X - 1] == block_normal || TheGameEngine.area[player.position.Y][player.position.X - 1] == block_normal_damaged)
 		{
 			TheGameEngine.TotalTurns++;
-			Turns++;
+			TheGameEngine.Turns++;
 			if (TheGameEngine.area[player.position.Y][player.position.X - 1] == block_normal)
 			{
 				//nalezy ukruszyc blok
@@ -383,7 +383,7 @@ void map::InitializeLevel(int level)
 	int i = 0;
 	for (i = 0; i <= CavesPerLevel; i++)
 	{
-		CaveSegments = 0;
+		TheGameEngine.CaveSegments = 0;
 		COORD tmp;
 		tmp.X = mathem:: RandomInt(1, MapMaxX - 1);
 		tmp.Y = mathem::RandomInt(1, MapMaxX - 1);
@@ -448,9 +448,9 @@ void map::AddCaveSegment(COORD point)
 	unsigned char c = block_normal;
 
 
-	if (b == block_normal && a<CaveSize || CaveSegments<MinCaveSize && b == block_normal)
+	if (b == block_normal && a<CaveSize || TheGameEngine.CaveSegments<MinCaveSize && b == block_normal)
 	{
-		CaveSegments++;
+		TheGameEngine.CaveSegments++;
 		TheGameEngine.area[point.Y][point.X] = block_empty;
 
 
@@ -545,7 +545,7 @@ void playerClass::Atack()
 		if (mathem::CalculateDistance(enemies[i].position, player.position) <= 1) //jestli gracz jest obok przeciwnika
 		{
 			TheGameEngine.TotalTurns++;
-			Turns++;
+			TheGameEngine.Turns++;
 			int obrazenia = mathem::RandomInt(MinDamageMultiplier*player.damage, player.damage);
 
 
@@ -609,14 +609,14 @@ void playerClass::Death()
 //GRACZ
 void playerClass::RegenerateLife()
 {
-	if (Turns >= HPregenRate)
+	if (TheGameEngine.Turns >= HPregenRate)
 	{
-		Turns = 0;
+		TheGameEngine.Turns = 0;
 		if (player.hp<PlayerStartHp)
 			player.hp++;
 	}
 	else
-		Turns++;
+		TheGameEngine.Turns++;
 }
 
 //DO Mapu

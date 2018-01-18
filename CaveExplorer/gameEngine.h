@@ -31,6 +31,8 @@ public:
 	 unsigned int EnemiesKilled;
 	 unsigned int GameSaveLoad;
 
+	 unsigned int Turns;
+	 unsigned int CaveSegments;
 
 	//reset mapy podczas rozgrywki
 	static void RefreshMap();
