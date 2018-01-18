@@ -62,11 +62,13 @@
 #define MinDamageMultiplier 0.6 //mno¿lik minimalnych obra¿en wzglêdem pe³nych obra¿eñ
 #define SeeDistance 6 //zasiêg wzroku przeciwników
 #define Visibility 10 //zasiêg wzroku gracza | obecnie nieu¿ywany
+#define GoldBlockProbability 200 //prawdopodobienstwo stworzenia zlotego bloku w zakresie 0-1000
 
 //kolory
 #define color_player 0x03
 #define color_block_normal 0x08
 #define color_block_static 0x0F
+#define color_block_gold 0x0E
 #define color_block_enemy 0x04
 #define color_background 0x00 
 #define color_portal 0x09

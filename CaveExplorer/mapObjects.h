@@ -13,6 +13,7 @@ public:
 	int hp;
 	int maxhp;
 	int damage;
+	int type=0;
 };
 
 class playerClass : public character
@@ -20,12 +21,14 @@ class playerClass : public character
 public:
 	int level;
 	int exp;
+	int gold;
 
 	int TryMove(char direction);
 	void getKey();
 	void RegenerateLife();
 	void Death();
 	void Atack();
+	void PickGold();
 };
 
 class enemy : public character

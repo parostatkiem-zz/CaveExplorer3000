@@ -212,7 +212,18 @@ int playerClass::TryMove(char direction)
 			if (TheGameEngine.area[player.position.Y - 1][player.position.X] == block_normal)
 			{
 				//nalezy ukruszyc blok
-				console::setColor(color_block_normal);
+			 if (GoldBlockProbability >= mathem::RandomInt(0, 1000))
+				{
+					//gracz wykopal zloty blok
+				 player.PickGold();
+					console::setColor(color_block_gold);
+					
+				}
+				else
+				{
+					console::setColor(color_block_normal);
+					
+				}
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y - 1, block_normal_damaged);
 				TheGameEngine.area[player.position.Y - 1][player.position.X] = block_normal_damaged;
 			}
@@ -233,7 +244,18 @@ int playerClass::TryMove(char direction)
 			if (TheGameEngine.area[player.position.Y + 1][player.position.X] == block_normal)
 			{
 				//nalezy ukruszyc blok
-				console::setColor(color_block_normal);
+			 if (GoldBlockProbability >= mathem::RandomInt(0, 1000))
+				{
+					//gracz wykopal zloty blok
+				 player.PickGold();
+					console::setColor(color_block_gold);
+					
+				}
+				else
+				{
+					console::setColor(color_block_normal);
+
+				}
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y + 1, block_normal_damaged);
 				TheGameEngine.area[player.position.Y + 1][player.position.X] = block_normal_damaged;
 			}
@@ -253,7 +275,18 @@ int playerClass::TryMove(char direction)
 			if (TheGameEngine.area[player.position.Y][player.position.X + 1] == block_normal)
 			{
 				//nalezy ukruszyc blok
-				console::setColor(color_block_normal);
+			 if (GoldBlockProbability >= mathem::RandomInt(0, 1000))
+				{
+					//gracz wykopal zloty blok
+				 player.PickGold();
+					console::setColor(color_block_gold);
+				
+				}
+				else
+				{
+					console::setColor(color_block_normal);
+
+				}
 				console::putCharXY(player.position.X - viewport.position.X + 1, player.position.Y - viewport.position.Y, block_normal_damaged);
 				TheGameEngine.area[player.position.Y][player.position.X + 1] = block_normal_damaged;
 			}
@@ -273,7 +306,18 @@ int playerClass::TryMove(char direction)
 			if (TheGameEngine.area[player.position.Y][player.position.X - 1] == block_normal)
 			{
 				//nalezy ukruszyc blok
-				console::setColor(color_block_normal);
+			 if (GoldBlockProbability >= mathem::RandomInt(0, 1000))
+				{
+					//gracz wykopal zloty blok
+				 player.PickGold();
+					console::setColor(color_block_gold);
+					
+				}
+				else
+				{
+					console::setColor(color_block_normal);
+
+				}
 				console::putCharXY(player.position.X - viewport.position.X - 1, player.position.Y - viewport.position.Y, block_normal_damaged);
 				TheGameEngine.area[player.position.Y][player.position.X - 1] = block_normal_damaged;
 			}
@@ -375,7 +419,11 @@ void map::InitializeLevel(int level)
 			if (x == 0 || x == MapMaxX - 1 || y == 0 || y == MapMaxY - 1)
 				TheGameEngine.area[y][x] = block_static; //otaczanie mapy nierozbijalnymi blokami
 			else
+			{
+				
 				TheGameEngine.area[y][x] = block_normal; // wypelnianie mapy blokami do rozwalenia
+			}
+				
 		}
 	}
 
@@ -617,6 +665,13 @@ void playerClass::RegenerateLife()
 	}
 	else
 		TheGameEngine.Turns++;
+}
+
+void playerClass::PickGold()
+{
+	gameEngine::Log("Podniosles zloto!", 0);
+	gold++;
+
 }
 
 //DO Mapu
