@@ -22,7 +22,7 @@ public:
 	int exp;
 
 	int TryMove(char direction);
-	void Move();
+	void getKey();
 	void RegenerateLife();
 	void Death();
 	void Atack();

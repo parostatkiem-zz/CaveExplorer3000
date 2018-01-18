@@ -27,14 +27,14 @@
 #define  ViewportH	30 
 
 //bloki
-#define blok_staly 0xB2
-#define blok_zwykly 0xB1
-#define blok_zwykly_ukruszony 0xB0
-#define blok_pusty ' '
-#define blok_gracz 0xF5
-#define blok_przeciwnik 0xFE
-#define blok_item 0xCF
-#define blok_portal 0xDB
+#define block_static 0xB2
+#define block_normal 0xB1
+#define block_normal_damaged 0xB0
+#define block_empty ' '
+#define block_player 0xF5
+#define block_enemy 0xFE
+#define block_item 0xCF
+#define block_portal 0xDB
 
 
 
@@ -64,38 +64,29 @@
 #define Visibility 10 //zasiêg wzroku gracza | obecnie nieu¿ywany
 
 //kolory
-#define kolor_gracz 0x03
-#define kolor_blok_zwykly 0x08
-#define kolor_blok_staly 0x0F
-#define kolor_blok_przeciwnik 0x04
-#define kolor_tlo 0x00 
-#define kolor_portal 0x09
+#define color_player 0x03
+#define color_block_normal 0x08
+#define color_block_static 0x0F
+#define color_block_enemy 0x04
+#define color_background 0x00 
+#define color_portal 0x09
 
-#define kolor_menu_aktywny 0x0D
-#define kolor_menu 0x05
-#define kolor_logo 0x05
+#define color_menu_active 0x0D
+#define color_menu 0x05
+#define color_logo 0x05
 
 //scie¿ki do plików
 #define language_path "Language\\"
 #define language_extension ".cml"
 
 
-//globalna definicja zmiennych
-extern unsigned char area[200][200];
-extern unsigned int GameState;
-extern unsigned int LogLevel;
-extern unsigned int TotalTurns;
-extern unsigned int CurrentLevel;
-extern unsigned int EnemiesKilled;
 
-extern unsigned int GameSaveLoad;
 
 extern mapObject viewport;
 extern mapObject portal;
 extern enemy enemies[MaxEnemyNum];
 extern playerClass player;
+extern gameEngine TheGameEngine;
 
 
-extern unsigned int tmp;
-extern unsigned int Turns;
-extern int CaveSegments;
+

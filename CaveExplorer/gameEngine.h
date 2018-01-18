@@ -22,6 +22,18 @@ public:
 class gameEngine
 {
 public:
+	//sekcja zmiennych
+	 unsigned char area[200][200];
+	 unsigned int GameState;
+	 unsigned int LogLevel;
+	 unsigned int TotalTurns;
+	 unsigned int CurrentLevel;
+	 unsigned int EnemiesKilled;
+	 unsigned int GameSaveLoad;
+
+	 unsigned int Turns;
+	 unsigned int CaveSegments;
+
 	//reset mapy podczas rozgrywki
 	static void RefreshMap();
 
@@ -40,4 +52,16 @@ public:
 	static void ShowOptions(int initialGameState);
 
 	static void DrawLogo();
+	
+	gameEngine()
+	{
+		GameState = 0;
+		LogLevel = 0;
+		TotalTurns = 0;
+		CurrentLevel = 0;
+		EnemiesKilled = 0;
+		GameSaveLoad = 0;
+	}
 };
+
+
