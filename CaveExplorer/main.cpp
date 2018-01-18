@@ -8,11 +8,9 @@ mapObject viewport;
 mapObject portal;
 enemy enemies[MaxEnemyNum] ;
 gameEngine TheGameEngine;
-//extern gameEngine TheGameEngine;
 
 int main()
 {
-	//TheGameEngine = new gameEngine();
 
 	console::initScreen();
 
