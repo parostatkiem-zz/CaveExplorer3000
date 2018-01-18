@@ -296,23 +296,23 @@ int playerClass::TryMove(char direction)
 }
 
 //NAZWA TROCHÊ Z£A, DA£BYM COS W STYLU WAITFORKEY I DO KLASY GRACZA
-void playerClass::Move()
+void playerClass::getKey()
 {
 
-	unsigned char znak;
+	unsigned char inputChar;
 	do
 	{
-		znak = console::getKey();
-		if (znak == 0 || znak == 0xE0)
-			znak = console::getKey();  //'czyszczenie' znaku ze œmieci jeœli jest enterem albo czymœ takim
+		inputChar = console::getKey();
+		if (inputChar == 0 || inputChar == 0xE0)
+			inputChar = console::getKey();  //'czyszczenie' znaku ze œmieci jeœli jest enterem albo czymœ takim
 
-		if (znak == 72 || znak == 80 || znak == 77 || znak == 75)
+		if (inputChar == 72 || inputChar == 80 || inputChar == 77 || inputChar == 75)
 		{
 			if (TheGameEngine.GameState == 1)
 			{
 				gameEngine::ClearLog();
 				RegenerateLife();
-				player.TryMove(znak);
+				player.TryMove(inputChar);
 				map::CheckPortal();
 				enemy::MoveEnemies();
 				map::CheckRefresh();
@@ -320,12 +320,12 @@ void playerClass::Move()
 			}
 
 		}
-		if (znak == 27) //escape pressed
+		if (inputChar == 27) //escape pressed
 		{
 			menu::ShowMenu();
 		}
 
-		if (znak == 32) //space pressed
+		if (inputChar == 32) //space pressed
 		{
 			if (TheGameEngine.GameState == 1)
 			{
@@ -441,35 +441,35 @@ void map::InitializeLevel(int level)
 }
 
 // DO MAPU
-void map::AddCaveSegment(COORD punkt)
+void map::AddCaveSegment(COORD point)
 {
 	int a = mathem::RandomInt(0, 100);
-	unsigned char b = TheGameEngine.area[punkt.Y][punkt.X];
+	unsigned char b = TheGameEngine.area[point.Y][point.X];
 	unsigned char c = blok_zwykly;
 
 
 	if (b == blok_zwykly && a<CaveSize || CaveSegments<MinCaveSize && b == blok_zwykly)
 	{
 		CaveSegments++;
-		TheGameEngine.area[punkt.Y][punkt.X] = blok_pusty;
+		TheGameEngine.area[point.Y][point.X] = blok_pusty;
 
 
 		//generowanie segmentow dla sasiednich 4 pol
 		COORD tmp;
-		tmp.X = punkt.X + 1;
-		tmp.Y = punkt.Y;
+		tmp.X = point.X + 1;
+		tmp.Y = point.Y;
 		AddCaveSegment(tmp);
 
-		tmp.X = punkt.X;
-		tmp.Y = punkt.Y + 1;
+		tmp.X = point.X;
+		tmp.Y = point.Y + 1;
 		AddCaveSegment(tmp);
 
-		tmp.X = punkt.X - 1;
-		tmp.Y = punkt.Y;
+		tmp.X = point.X - 1;
+		tmp.Y = point.Y;
 		AddCaveSegment(tmp);
 
-		tmp.X = punkt.X;
-		tmp.Y = punkt.Y - 1;
+		tmp.X = point.X;
+		tmp.Y = point.Y - 1;
 		AddCaveSegment(tmp);
 	}
 }

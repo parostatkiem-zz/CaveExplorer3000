@@ -128,7 +128,7 @@ void menu::ShowMenu()
 				
 
 
-				player.Move();
+				player.getKey();
 
 				return;
 				break;
@@ -159,7 +159,7 @@ void menu::ShowMenu()
 						system("CLS");
 						gameEngine::RefreshMap();
 						gameEngine::RefreshGui();
-						player.Move();
+						player.getKey();
 					}
 
 				}
