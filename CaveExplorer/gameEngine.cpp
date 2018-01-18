@@ -47,11 +47,11 @@ void menu::ShowMenu()
 		{
 			if (menuIndex == i)
 			{
-				colors[i] = kolor_menu_aktywny;
+				colors[i] = color_menu_active;
 			}
 			else
 			{
-				colors[i] = kolor_menu;
+				colors[i] = color_menu;
 			}
 
 
@@ -150,7 +150,7 @@ void menu::ShowMenu()
 						if (!loadGame())
 						{
 							system("CLS");
-							console::drawMenuItem(25, 13, kolor_blok_przeciwnik, "Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"); //error
+							console::drawMenuItem(25, 13, color_block_enemy, "Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"); //error
 							system("pause");
 							system("CLS");
 							break;
@@ -178,7 +178,7 @@ void menu::ShowMenu()
 
 			case 3: //wyjdz
 
-				if (TheGameEngine.area[0][0] == blok_staly && TheGameEngine.GameSaveLoad || !TheGameEngine.GameSaveLoad)
+				if (TheGameEngine.area[0][0] == block_static && TheGameEngine.GameSaveLoad || !TheGameEngine.GameSaveLoad)
 					saveGame(); //zapisanie gry na wyjsciu jesli wczytana jest jakas mapa lub zmieniono opcje
 				exit(0);  //ostateczne wyjscie z programu
 				break;
@@ -237,7 +237,7 @@ void gameEngine::RefreshMap()
 			c = TheGameEngine.area[y][x];
 			if (x < 0 || x >= MapMaxX || y < 0 || y >= MapMaxY)
 			{
-				console::setColor(kolor_tlo);
+				console::setColor(color_background);
 				printf(" ");
 				console::setColor(0x0F);
 				continue;
@@ -247,23 +247,23 @@ void gameEngine::RefreshMap()
 
 			switch (c)
 			{
-			case (char)blok_gracz:
-				console::setColor(kolor_gracz);
+			case (char)block_player:
+				console::setColor(color_player);
 				break;
 
-			case (char)(blok_zwykly) :
-				console::setColor(kolor_blok_zwykly);
+			case (char)(block_normal) :
+				console::setColor(color_block_normal);
 				break;
-			case (char)(blok_zwykly_ukruszony) :
-				console::setColor(kolor_blok_zwykly);
-				break;
-
-			case (char)blok_przeciwnik:
-				console::setColor(kolor_blok_przeciwnik);
+			case (char)(block_normal_damaged) :
+				console::setColor(color_block_normal);
 				break;
 
-			case (char)blok_staly:
-				console::setColor(kolor_blok_staly);
+			case (char)block_enemy:
+				console::setColor(color_block_enemy);
+				break;
+
+			case (char)block_static:
+				console::setColor(color_block_static);
 				break;
 			}
 			//if (CalculateDistance(player,tmp)<=Visibility)
@@ -274,16 +274,16 @@ void gameEngine::RefreshMap()
 		}
 		printf("\n");
 	}
-	console::setColor(kolor_gracz);
-	console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, blok_gracz);
+	console::setColor(color_player);
+	console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, block_player);
 
 
 	//czy portal jest w zasiegu mapy
 	tmp.position = map::GetOnScreenPos(portal.position);
 	if (tmp.position.X >= 0 && tmp.position.X <= ViewportW && tmp.position.Y >= 0 && tmp.position.Y <= ViewportH)
 	{
-		console::setColor(kolor_portal);
-		console::putCharXY(portal.position.X - viewport.position.X, portal.position.Y - viewport.position.Y, blok_portal);
+		console::setColor(color_portal);
+		console::putCharXY(portal.position.X - viewport.position.X, portal.position.Y - viewport.position.Y, block_portal);
 	}
 	console::setColor(0x0F);
 }
@@ -373,7 +373,7 @@ void gameEngine::RefreshGui()
 
 		if (i > val)
 		{
-			console::setColor(kolor_portal);
+			console::setColor(color_portal);
 
 			c = 178;
 		}
@@ -451,7 +451,7 @@ void gameEngine::ClearLog()
 void gameEngine::ShowDeathScreen()
 {
 	system("cls");
-	console::setColor(kolor_logo);
+	console::setColor(color_logo);
 	printf("                                     ____\n");
 	printf("                              __,---'     `--.__\n");
 	printf("                           ,-'                ; `.\n");
@@ -483,14 +483,14 @@ void gameEngine::ShowDeathScreen()
 
 	//przezyles xxx itd.
 
-	console::setColor(kolor_menu_aktywny);
+	console::setColor(color_menu_active);
 	snprintf(buf, sizeof buf, "Doszedˆe˜ do jaskini: ", TheGameEngine.CurrentLevel + 1);
 	console::putStrXY(62, 3, buf);
 	console::setColor(0xD0);
 	snprintf(buf, sizeof buf, "%d", TheGameEngine.CurrentLevel + 1);
 	console::putStrXY(62 + 23, 3, buf);
 
-	console::setColor(kolor_menu_aktywny);
+	console::setColor(color_menu_active);
 
 	snprintf(buf, sizeof buf, "Osi¥gn¥ˆe˜ poziom: %d", player.level);
 	console::putStrXY(62, 5, buf);
@@ -520,7 +520,7 @@ void gameEngine::ShowOptions(int initialGameState)
 	{
 
 
-		console::drawMenuItem(16, 12, kolor_menu, "Obsˆuga zapisu i wczytywania gry");
+		console::drawMenuItem(16, 12, color_menu, "Obsˆuga zapisu i wczytywania gry");
 		if (menuIndex == 1)
 			console::drawMenuItem(16 + 37, 12, 0x0A, "TAK"); //lewo
 		else
@@ -565,7 +565,7 @@ void gameEngine::ShowOptions(int initialGameState)
 
 void gameEngine::DrawLogo()
 {
-	console::setColor(kolor_logo);
+	console::setColor(color_logo);
 
 
 	console::putStrXY(1, 0, "_________                    ___________             .__              ");
