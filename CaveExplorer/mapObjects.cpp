@@ -594,7 +594,7 @@ void map::PlaceShop()
 	if (b == c && portal.position.X!=tmp.position.X && portal.position.Y != tmp.position.Y)
 	{
 		theShop.position = tmp.position;
-
+		theShop.flushItems();
 		return;
 	}
 	else
@@ -602,6 +602,28 @@ void map::PlaceShop()
 		PlaceShop();
 	}
 
+}
+
+void shop::flushItems()
+{
+	items.clear();
+	shopItem tmp;
+	for(int i=0;i<ShopItemTypesAmount;i++)
+	{
+		//dla kazdego typu broni
+		for (int z = 0; z < ShopItemsOfEveryType; z++)
+		{
+			//dla kazdej sztuki z danego typu
+			tmp.type = i;
+			tmp.bonus = mathem::RandomInt(-2, 3); //losowanie bonusa
+			tmp.price = tmp.bonus * 12;
+			if (tmp.price < 1)
+				tmp.price = 1;
+			
+			items.push_back(tmp);
+		}
+
+	}
 }
 
 //GRACZ

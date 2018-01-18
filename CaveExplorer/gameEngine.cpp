@@ -455,7 +455,7 @@ void gameEngine::ClearLog()
 	int i = 0;
 	for (i = 11; i < ViewportH; i++)
 	{
-		console::putStrXY(ViewportW + 1, i, "                                      ");
+		console::putStrXY(ViewportW + 0, i, "                                      ");
 	}
 }
 

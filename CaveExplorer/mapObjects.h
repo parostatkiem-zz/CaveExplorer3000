@@ -54,25 +54,38 @@ public:
 	static void PlaceShop();
 };
 
-enum weaponTypeEnum
+class ShopItemType
 {
-	weapon = 0,
-	armor = 1
+	int value = 0;//0=weapon, 1= armor
+	string bonusUnit = "DMG"; 
 
 	//mo¿na dodaæ wiêcej w przysz³oœci
+public:
+	ShopItemType(int _value, string _bonusUnit )
+	{
+		value = _value;
+		bonusUnit = _bonusUnit;
+	}
+	ShopItemType()
+	{}
 };
+
 class shopItem
 {
 public:
-	weaponTypeEnum type;
+	int type;
 	int price = 0;
 	int bonus = 0;
-	string bonusUnit = "DMG";
+	
+	shopItem()
+	{}
 };
 
 class shop : public mapObject
 {
-	vector<weaponTypeEnum> alreadyBoughtTypes;
+public:
+	
+	vector<int> alreadyBoughtTypes;
 	vector<shopItem> items;
 
 	void flushItems();

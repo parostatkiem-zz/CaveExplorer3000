@@ -63,6 +63,8 @@
 #define SeeDistance 6 //zasiêg wzroku przeciwników
 #define Visibility 10 //zasiêg wzroku gracza | obecnie nieu¿ywany
 #define GoldBlockProbability 200 //prawdopodobienstwo stworzenia zlotego bloku w zakresie 0-1000
+#define ShopItemsOfEveryType 3
+#define ShopItemTypesAmount 2
 
 //kolory
 #define color_player 0x03
@@ -72,7 +74,7 @@
 #define color_block_enemy 0x04
 #define color_background 0x00 
 #define color_portal 0x09
-#define color_shop 0x06
+#define color_shop 0x0A
 
 #define color_menu_active 0x0D
 #define color_menu 0x05
