@@ -381,7 +381,10 @@ void gameEngine::RefreshGui()
 		console::putCharXY(ViewportW + 10 + 12 - i, 8, c);
 	}
 
-
+	//gold number
+	console::setColor(color_block_gold);
+	snprintf(buf, sizeof buf, "GOLD: %d",  player.gold);
+	console::putStrXY(ViewportW + 2, 10, buf); 
 
 
 
@@ -434,7 +437,7 @@ void gameEngine::Log(char* text, int num)
 		console::setColor(0x08);
 		snprintf(buf, sizeof buf, "%s", text);
 	}
-	console::putStrXY(ViewportW + 1, ViewportH - 1 - TheGameEngine.LogLevel, buf);
+	console::putStrXY(ViewportW + 1, ViewportH -1 - TheGameEngine.LogLevel, buf);
 	TheGameEngine.LogLevel++;
 }
 
@@ -442,7 +445,7 @@ void gameEngine::ClearLog()
 {
 	TheGameEngine.LogLevel = 0;
 	int i = 0;
-	for (i = 9; i < ViewportH; i++)
+	for (i = 11; i < ViewportH; i++)
 	{
 		console::putStrXY(ViewportW + 1, i, "                                      ");
 	}
