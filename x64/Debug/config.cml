@@ -1,0 +1,8 @@
+[Default]
+<Language>="polish"
+<Language_Path>="Language\\"
+<Language_Expansion>=".cml"
+[Languages]
+<polish>"Polski"
+<english>"English"
+[end]

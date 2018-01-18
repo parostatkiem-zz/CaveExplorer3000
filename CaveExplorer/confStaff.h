@@ -4,13 +4,13 @@
 #include <fstream>
 #include <string>
 
-template <class type = std::string>
+template <class type>
 class container
 {
 public:
 	std::string* key;
 	type* value;
-	unsigned int length;
+	
 
 	container();
 	container(std::string ke, type va);
@@ -18,21 +18,28 @@ public:
 
 	void add(std::string ke, type va);
 	void clearContainer();
-	type find(std::string requestValue);
+	type& find(std::string requestValue);
 	bool good() const;
+	unsigned int getLength();
+	void coppyContainer(container<type>& from);
+	void showContainer();
+	void changeValue(std::string reqKey, type reqValue);
 
 private:
+	unsigned int length;
+
 	template<class typeToDel>
 	void deleteIf(typeToDel* variable);
 
 	template<class typeToCp>
-	void coppy(typeToCp* from, typeToCp* to, unsigned int howMany);
+	void coppy(typeToCp* from, typeToCp* to, unsigned int howMany = length);
 };
 
 template <class type = std::string>
 class cml
 {
 	std::fstream file;
+	std::string filePath;
 
 	//private methods
 	template<class t>
@@ -42,6 +49,7 @@ public:
 	container <type> data;
 
 	//constructors
+	cml();
 	cml(std::string path);
 	~cml();
 
@@ -50,7 +58,7 @@ public:
 	bool good() const;
 	bool goodFile() const;
 	bool goodData() const;
-	type findKey(std::string request);
+	type& findKey(std::string request);
 	void loadSection(std::string request);
 	void loadKey(std::string requestKey, std::string requestSection = "");
 	void loadFile();
@@ -114,7 +122,7 @@ inline void container<type>::clearContainer(){
 }
 
 template<class type>
-inline type container<type>::find(std::string requestValue){
+inline type& container<type>::find(std::string requestValue){
 	for (int i = 0; i < length; i++) 
 		if (requestValue == key[i]) return value[i];
 	return type();
@@ -124,6 +132,51 @@ template<class type>
 inline bool container<type>::good() const
 {
 	return (bool)length;
+}
+
+template<class type>
+inline unsigned int container<type>::getLength()
+{
+	return length;
+}
+
+template<class type>
+inline void container<type>::coppyContainer(container<type>& from){
+	type* newValue = new type[from.getLength()];
+	std::string* newKey = new std::string[from.getLength()];
+
+	coppy(from.value, newValue, from.getLength());
+	coppy(from.key, newKey, from.getLength());
+
+	if (length) {
+		deleteIf<std::string>(key);
+		deleteIf<type>(value);
+	}
+
+	value = newValue;
+	key = newKey;
+
+	length = from.getLength();
+
+
+}
+
+template<class type>
+inline void container<type>::showContainer(){
+	std::cout << "Dlugosc kontenera: " << length << std::endl;
+	for (int i = 0; i < length; i++)
+		std::cout << "Klucz: " << key[i] << " - Value: " << value[i] << std::endl;
+}
+
+template<class type>
+inline void container<type>::changeValue(std::string reqKey, type reqValue){
+	for (int i = 0; i < length; i++) {
+		if (key[i] == reqKey) {
+			value[i] = reqValue;
+			return;
+		}
+		i++;
+	}
 }
 
 template<class type>
@@ -143,11 +196,16 @@ inline void container<type>::coppy(typeToCp * from, typeToCp * to, unsigned int 
 
 
 
+template<class type>
+inline cml<type>::cml(){
+}
+
 //-------------------------------------cml------------------------------------- 
 //constructors
 template<class type>
 inline cml<type>::cml(std::string path) {
 	file.open(path, std::ios::in | std::ios::binary);
+	filePath = path;
 }
 
 template<class type>
@@ -158,7 +216,7 @@ inline cml<type>::~cml(){
 
 //methods
 template<class type>
-inline type cml<type>::findKey(std::string request){
+inline type& cml<type>::findKey(std::string request){
 	return data.find(request);
 }
 
@@ -320,13 +378,14 @@ inline type cml<type>::readKey(std::string path, std::string requestKey, std::st
 
 template<class type>
 inline std::string cml<type>::givePath(){
-	return path;
+	return filePath;
 }
 
 template<class type>
 inline void cml<type>::changeFile(std::string path){
 	file.close();
-	file.open(path, path, std::ios::in | std::ios::binary)
+	file.open(path, std::ios::in | std::ios::binary);
+	filePath = path;
 }
 
 template<class type>

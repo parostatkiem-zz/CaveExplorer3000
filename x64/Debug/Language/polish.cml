@@ -1,0 +1,22 @@
+[Menu]
+<Start_New_Game>="Rozpocznij NOW¤ gr©"
+<Continue_Saved_Game>="Kontynuuj zapisan¥ gr©"
+<Options>="Opcje"
+<End_Game>="Zakoäcz gr©"
+<Saving_System>="Obsˆuga zapisu i wczytywania gry"
+<No>"Nie"
+<Yes>"Tak"
+<Change_Language>"Zmien jezyk"
+<Fatal_Error>="Uuups, cos poszlo nie tak :( Nie udalo sie zaladowac gry"
+[Game]
+<Gold>"Zloto: %d"
+<Hp>"Zycie:"
+<Lvl>"Poziom:"
+<Dmg>"Obrazenia:"
+<Cave>"Jaskinia:"
+<Portal>"Portal:"
+<You_Came_To>"Doszedles do jaskini: "
+<Reached_Level>"Osi¥gn¥ˆe˜ poziom: %d"
+<Killed_Mobs>"Zabiˆe˜ %d przeciwnik¢w"
+<You_Moved>"Poruszˆe˜ si© %d razy"
+[end]
