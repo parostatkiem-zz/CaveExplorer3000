@@ -86,7 +86,7 @@ extern mapObject viewport;
 extern mapObject portal;
 extern enemy enemies[MaxEnemyNum];
 extern playerClass player;
-
+extern gameEngine TheGameEngine;
 
 
 extern unsigned int tmp;

@@ -511,8 +511,8 @@ COORD map::GetOnScreenPos(COORD p)
 void map::PlacePortal()
 {
 	mapObject tmp;
-	tmp.position.X = mathem::RandomInt(1, MapMaxX - 1);
-	tmp.position.Y = mathem::RandomInt(1, MapMaxY - 1);
+	tmp.position.X = mathem::RandomInt(2, MapMaxX - 1);
+	tmp.position.Y = mathem::RandomInt(2, MapMaxY - 1);
 
 	unsigned char b = TheGameEngine.area[tmp.position.Y][tmp.position.X];
 	unsigned char c = blok_pusty;

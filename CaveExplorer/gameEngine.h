@@ -62,4 +62,4 @@ public:
 	}
 };
 
-gameEngine TheGameEngine;
+

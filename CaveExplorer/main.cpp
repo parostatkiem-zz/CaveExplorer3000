@@ -7,7 +7,8 @@ playerClass player;
 mapObject viewport;
 mapObject portal;
 enemy enemies[MaxEnemyNum] ;
-//gameEngine TheGameEngine;
+gameEngine TheGameEngine;
+//extern gameEngine TheGameEngine;
 
 int main()
 {
