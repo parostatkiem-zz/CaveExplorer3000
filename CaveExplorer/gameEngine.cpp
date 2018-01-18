@@ -41,7 +41,7 @@ void menu::ShowMenu()
 
 	do
 	{
-		if (GameState != 0 && GameState != 1)
+		if (TheGameEngine.GameState != 0 && TheGameEngine.GameState != 1)
 			return;
 		for (i = 0; i < 5; i++)
 		{
@@ -56,7 +56,7 @@ void menu::ShowMenu()
 
 
 		}
-		if (GameState != 1 && !GameSaveLoad || !isSaved())
+		if (TheGameEngine.GameState != 1 && !TheGameEngine.GameSaveLoad || !isSaved())
 		{
 			colors[1] = 0x08;
 		}
@@ -64,7 +64,7 @@ void menu::ShowMenu()
 
 
 		console::drawMenuItem(17, 7, colors[0], "Rozpocznij NOW¤ gr©");
-		if (isSaved() && GameSaveLoad  &&  GameState == 0)
+		if (isSaved() && TheGameEngine.GameSaveLoad  &&  TheGameEngine.GameState == 0)
 		{
 
 
@@ -115,16 +115,16 @@ void menu::ShowMenu()
 
 				system("CLS");
 
-				GameState = 1;
-				CurrentLevel = 0;
+				TheGameEngine.GameState = 1;
+				TheGameEngine.CurrentLevel = 0;
 				Turns = 0;
 				player.hp = PlayerStartHp; // 3 dla testow
 				player.damage = PlayerStartDamage;
 				player.maxhp = PlayerStartHp;
 				player.exp = 0; //start exp
 				player.level = 1;
-				EnemiesKilled = 0;
-				map::InitializeLevel(CurrentLevel);
+				TheGameEngine.EnemiesKilled = 0;
+				map::InitializeLevel(TheGameEngine.CurrentLevel);
 				
 
 
@@ -134,7 +134,7 @@ void menu::ShowMenu()
 				break;
 			case 1: //kontynuuj
 
-				if (GameState == 1)
+				if (TheGameEngine.GameState == 1)
 				{
 					//gra sie toczy, zamknij menu
 					system("CLS");
@@ -155,7 +155,7 @@ void menu::ShowMenu()
 							system("CLS");
 							break;
 						}
-						GameState = 1;
+						TheGameEngine.GameState = 1;
 						system("CLS");
 						gameEngine::RefreshMap();
 						gameEngine::RefreshGui();
@@ -170,15 +170,15 @@ void menu::ShowMenu()
 				break;
 
 			case 2: //opcje
-				tmp = GameState; //zapis obecnego GameState do tymczasowej zmiennej
-				GameState = 2;
+				tmp = TheGameEngine.GameState; //zapis obecnego TheGameEngine.GameState do tymczasowej zmiennej
+				TheGameEngine.GameState = 2;
 				gameEngine::ShowOptions(tmp);
 				gameEngine::DrawLogo();  //ponowne wyœwietlenie grafiki logo
 				break;
 
 			case 3: //wyjdz
 
-				if (area[0][0] == blok_staly && GameSaveLoad || !GameSaveLoad)
+				if (TheGameEngine.area[0][0] == blok_staly && TheGameEngine.GameSaveLoad || !TheGameEngine.GameSaveLoad)
 					saveGame(); //zapisanie gry na wyjsciu jesli wczytana jest jakas mapa lub zmieniono opcje
 				exit(0);  //ostateczne wyjscie z programu
 				break;
@@ -187,7 +187,7 @@ void menu::ShowMenu()
 
 		if (c == 27) //escape pressed
 		{
-			if (GameState == 1)
+			if (TheGameEngine.GameState == 1)
 			{
 				gameEngine::RefreshMap(); //kontunuuj gre
 				return;
@@ -208,7 +208,7 @@ void gameEngine::RefreshMap()
 	//RefreshGui();
 	ClearLog();
 
-	if (GameState != 1)
+	if (TheGameEngine.GameState != 1)
 		return;
 
 	int x = 0;
@@ -234,7 +234,7 @@ void gameEngine::RefreshMap()
 
 
 
-			c = area[y][x];
+			c = TheGameEngine.area[y][x];
 			if (x < 0 || x >= MapMaxX || y < 0 || y >= MapMaxY)
 			{
 				console::setColor(kolor_tlo);
@@ -291,7 +291,7 @@ void gameEngine::RefreshMap()
 void gameEngine::RefreshGui()
 {
 
-	if (GameState != 1)
+	if (TheGameEngine.GameState != 1)
 		return;
 	int hpPercent = player.hp * 15 / player.maxhp;
 	int i;
@@ -354,7 +354,7 @@ void gameEngine::RefreshGui()
 	snprintf(buf, sizeof buf, "%d - %d", (int)(player.damage * MinDamageMultiplier), player.damage);
 	console::putStrXY(ViewportW + 7, 6, buf); //player min and max damage number
 
-	snprintf(buf, sizeof buf, "%d", CurrentLevel + 1);
+	snprintf(buf, sizeof buf, "%d", TheGameEngine.CurrentLevel + 1);
 	console::putStrXY(ViewportW + 21, 6, buf); //cave deep
 
 
@@ -434,13 +434,13 @@ void gameEngine::Log(char* text, int num)
 		console::setColor(0x08);
 		snprintf(buf, sizeof buf, "%s", text);
 	}
-	console::putStrXY(ViewportW + 1, ViewportH - 1 - LogLevel, buf);
-	LogLevel++;
+	console::putStrXY(ViewportW + 1, ViewportH - 1 - TheGameEngine.LogLevel, buf);
+	TheGameEngine.LogLevel++;
 }
 
 void gameEngine::ClearLog()
 {
-	LogLevel = 0;
+	TheGameEngine.LogLevel = 0;
 	int i = 0;
 	for (i = 9; i < ViewportH; i++)
 	{
@@ -484,10 +484,10 @@ void gameEngine::ShowDeathScreen()
 	//przezyles xxx itd.
 
 	console::setColor(kolor_menu_aktywny);
-	snprintf(buf, sizeof buf, "Doszedˆe˜ do jaskini: ", CurrentLevel + 1);
+	snprintf(buf, sizeof buf, "Doszedˆe˜ do jaskini: ", TheGameEngine.CurrentLevel + 1);
 	console::putStrXY(62, 3, buf);
 	console::setColor(0xD0);
-	snprintf(buf, sizeof buf, "%d", CurrentLevel + 1);
+	snprintf(buf, sizeof buf, "%d", TheGameEngine.CurrentLevel + 1);
 	console::putStrXY(62 + 23, 3, buf);
 
 	console::setColor(kolor_menu_aktywny);
@@ -495,10 +495,10 @@ void gameEngine::ShowDeathScreen()
 	snprintf(buf, sizeof buf, "Osi¥gn¥ˆe˜ poziom: %d", player.level);
 	console::putStrXY(62, 5, buf);
 
-	snprintf(buf, sizeof buf, "Zabiˆe˜ %d przeciwnik¢w", EnemiesKilled);
+	snprintf(buf, sizeof buf, "Zabiˆe˜ %d przeciwnik¢w", TheGameEngine.EnemiesKilled);
 	console::putStrXY(62, 7, buf);
 
-	snprintf(buf, sizeof buf, "Poruszˆe˜ si© %d razy", TotalTurns);
+	snprintf(buf, sizeof buf, "Poruszˆe˜ si© %d razy", TheGameEngine.TotalTurns);
 	console::putStrXY(62, 9, buf);
 
 }
@@ -510,7 +510,7 @@ void gameEngine::ShowOptions(int initialGameState)
 	unsigned char c;
 
 
-	if (GameSaveLoad)
+	if (TheGameEngine.GameSaveLoad)
 		menuIndex = 1;
 	else
 		menuIndex = 0;
@@ -535,7 +535,7 @@ void gameEngine::ShowOptions(int initialGameState)
 		{
 			if (menuIndex < (2 - 1))
 			{
-				GameSaveLoad = 1;
+				TheGameEngine.GameSaveLoad = 1;
 				menuIndex++;
 			}
 
@@ -545,7 +545,7 @@ void gameEngine::ShowOptions(int initialGameState)
 		{
 			if (menuIndex >0)
 			{
-				GameSaveLoad = 0;
+				TheGameEngine.GameSaveLoad = 0;
 				menuIndex--;
 
 			}
@@ -553,7 +553,7 @@ void gameEngine::ShowOptions(int initialGameState)
 
 		if (c == 27) //escape pressed
 		{
-			GameState = initialGameState;
+			TheGameEngine.GameState = initialGameState;
 			system("CLS");
 
 			return;
@@ -580,3 +580,4 @@ void gameEngine::DrawLogo()
 	console::putStrXY(60, 20, "by  Jan Sudczak & Filip Strozik");
 	console::setColor(0x0F);
 }
+

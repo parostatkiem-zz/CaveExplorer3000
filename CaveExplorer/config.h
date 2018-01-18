@@ -80,20 +80,13 @@
 #define language_extension ".cml"
 
 
-//globalna definicja zmiennych
-extern unsigned char area[200][200];
-extern unsigned int GameState;
-extern unsigned int LogLevel;
-extern unsigned int TotalTurns;
-extern unsigned int CurrentLevel;
-extern unsigned int EnemiesKilled;
 
-extern unsigned int GameSaveLoad;
 
 extern mapObject viewport;
 extern mapObject portal;
 extern enemy enemies[MaxEnemyNum];
 extern playerClass player;
+
 
 
 extern unsigned int tmp;

@@ -44,7 +44,7 @@ int saveGame()
 
 	
 
-	if (!GameSaveLoad) //trzeba sapisac do pliku informacje, ze obsluga zapisu/odczytu jest wylaczona
+	if (!TheGameEngine.GameSaveLoad) //trzeba sapisac do pliku informacje, ze obsluga zapisu/odczytu jest wylaczona
 	{
 		file<<"gameSaveLoad=0\n";
 		file.close();
@@ -66,13 +66,13 @@ int saveGame()
 				{
 					
 				for (int y = 0; y < MapMaxX; y++)
-					tmp += area[x][y];
+					tmp += TheGameEngine.area[x][y];
 				}
 	file << "map=" << tmp.c_str();
 	file<< "\n";
-	file<<"totalTurns="<< TotalTurns<<"\n";
-	file<<"currentLevel="<< CurrentLevel<<"\n";
-	file<<"enemiesKilled="<< EnemiesKilled<<"\n";
+	file<<"totalTurns="<< TheGameEngine.TotalTurns<<"\n";
+	file<<"currentLevel="<< TheGameEngine.CurrentLevel<<"\n";
+	file<<"enemiesKilled="<<TheGameEngine.EnemiesKilled<<"\n";
 	file<<"player="<< player.position.X<<","<< player.position.Y << "," << player.damage << "," << player.exp << "," << player.hp << "," << player.level << "," << player.maxhp << ",\n";
 	file<<"enemies=";
 	for (int x = 0; x < 100; x++)
@@ -149,8 +149,8 @@ int loadGame()
 
 		if (strcmp(zmienna, "gameSaveLoad") == 0)
 		{
-			GameSaveLoad = (unsigned int)line;
-			if (!GameSaveLoad)
+			TheGameEngine.GameSaveLoad = (unsigned int)line;
+			if (!TheGameEngine.GameSaveLoad)
 				return 0; //wczytywanie jest wylaczone
 		}
 
@@ -161,7 +161,7 @@ int loadGame()
 		{
 			for (int x = 0; x <= MapMaxY; x++)
 			{
-			memcpy(area[x], (unsigned char*)line, MapMaxX); // OK
+			memcpy(TheGameEngine.area[x], (unsigned char*)line, MapMaxX); // OK
 				for (int y = 0; y<MapMaxX; y++)
 					*line++;
 			}
@@ -172,19 +172,19 @@ int loadGame()
 
 		if (strcmp(zmienna, "currentLevel") == 0)
 		{
-			CurrentLevel = atoi(line);
+			TheGameEngine.CurrentLevel = atoi(line);
 
 		}
 
 		if (strcmp(zmienna, "totalTurns") == 0)
 		{
-			TotalTurns = atoi(line);
+			TheGameEngine.TotalTurns = atoi(line);
 
 		}
 
 		if (strcmp(zmienna, "enemiesKilled") == 0)
 		{
-			EnemiesKilled = atoi(line);
+			TheGameEngine.EnemiesKilled = atoi(line);
 
 		}
 
@@ -363,7 +363,7 @@ int loadGameSaveVariable(unsigned int checkForGameSaveVariable)
 	if (plik == NULL)
 	{
 		if (checkForGameSaveVariable)		
-			GameSaveLoad = 1; //ustawianie zmiennej na domyœl¹ wartoœæ
+			TheGameEngine.GameSaveLoad = 1; //ustawianie zmiennej na domyœl¹ wartoœæ
 		return 0;
 	}
 	const size_t line_size = 41000;
@@ -380,9 +380,9 @@ int loadGameSaveVariable(unsigned int checkForGameSaveVariable)
 	if (checkForGameSaveVariable)
 	{
 		if (line[13] == '1')
-			GameSaveLoad = 1;
+			TheGameEngine.GameSaveLoad = 1;
 		else
-			GameSaveLoad = 0;
+			TheGameEngine.GameSaveLoad = 0;
 	}
 
 

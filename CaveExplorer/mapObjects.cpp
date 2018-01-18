@@ -37,72 +37,72 @@ void enemy::MoveEnemies()
 				{
 					if (xDist > 0) //w lewo
 					{
-						if (area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
+						if (TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.X--;
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X + 1, map::GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-							area[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
+							TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
 						}
 						else
 						{
 							if (yDist > 0) //w gore
 							{
-								if (area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
+								if (TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y--;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
-									area[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
 							else //w dol
 							{
-								if (area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
+								if (TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y++;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
-									area[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
 						}
 					}
 					else //w prawo
 					{
-						if (area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
+						if (TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.X++;
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X - 1, map::GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-							area[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
+							TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
 						}
 						else
 						{
 							if (yDist > 0) //w gore
 							{
-								if (area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
+								if (TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y--;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
-									area[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
 							else //w dol
 							{
-								if (area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
+								if (TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.Y++;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
-									area[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
 								}
 							}
 						}
@@ -112,37 +112,37 @@ void enemy::MoveEnemies()
 				{
 					if (yDist > 0) //w gore
 					{
-						if (area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
+						if (TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_pusty || TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] == blok_gracz)
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.Y--;
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y + 1, blok_pusty);
-							area[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
+							TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] = blok_pusty;
 						}
 						else
 						{
 							if (xDist > 0) //w lewo
 							{
-								if (area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
+								if (TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X--;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X + 1, map::GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									area[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
 								}
 
 							}
 							else //w prawo
 							{
-								if (area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
+								if (TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X++;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X - 1, map::GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									area[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
 								}
 
 							}
@@ -150,37 +150,37 @@ void enemy::MoveEnemies()
 					}
 					else //w dol
 					{
-						if (area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
+						if (TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty || TheGameEngine.area[enemies[i].position.Y + 1][enemies[i].position.X] == blok_pusty)
 						{
 							//moze sie normalnie poruszyc w wyznaczonym kierunku
 							enemies[i].position.Y++;
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 							console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y - 1, blok_pusty);
-							area[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
+							TheGameEngine.area[enemies[i].position.Y - 1][enemies[i].position.X] = blok_pusty;
 						}
 						else
 						{
 							if (xDist > 0) //w lewo
 							{
-								if (area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
+								if (TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_pusty || TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] == blok_gracz)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X--;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X + 1, map::GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									area[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] = blok_pusty;
 								}
 
 							}
 							else //w prawo
 							{
-								if (area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
+								if (TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_pusty || TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X + 1] == blok_gracz)
 								{
 									//nie moze sie normalnie poruszyc, wiec rusza wedlug innej osi
 									enemies[i].position.X++;
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X, map::GetOnScreenPos(enemies[i].position).Y, blok_przeciwnik);
 									console::putCharXY(map::GetOnScreenPos(enemies[i].position).X - 1, map::GetOnScreenPos(enemies[i].position).Y, blok_pusty);
-									area[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
+									TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X - 1] = blok_pusty;
 								}
 
 							}
@@ -189,7 +189,7 @@ void enemy::MoveEnemies()
 				}
 			}
 			//koniec ruchu
-			area[enemies[i].position.Y][enemies[i].position.X] = blok_przeciwnik;
+			TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X] = blok_przeciwnik;
 
 			console::setColor(0x0F);
 
@@ -205,16 +205,16 @@ int playerClass::TryMove(char direction)
 	switch (direction)
 	{
 	case 72: //gora
-		if (area[player.position.Y - 1][player.position.X] == blok_pusty || area[player.position.Y - 1][player.position.X] == blok_zwykly || area[player.position.Y - 1][player.position.X] == blok_zwykly_ukruszony)
+		if (TheGameEngine.area[player.position.Y - 1][player.position.X] == blok_pusty || TheGameEngine.area[player.position.Y - 1][player.position.X] == blok_zwykly || TheGameEngine.area[player.position.Y - 1][player.position.X] == blok_zwykly_ukruszony)
 		{
-			TotalTurns++;
+			TheGameEngine.TotalTurns++;
 			Turns++;
-			if (area[player.position.Y - 1][player.position.X] == blok_zwykly)
+			if (TheGameEngine.area[player.position.Y - 1][player.position.X] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y - 1, blok_zwykly_ukruszony);
-				area[player.position.Y - 1][player.position.X] = blok_zwykly_ukruszony;
+				TheGameEngine.area[player.position.Y - 1][player.position.X] = blok_zwykly_ukruszony;
 			}
 			else
 			{
@@ -226,16 +226,16 @@ int playerClass::TryMove(char direction)
 		}
 		break;
 	case 80:  //dol
-		if (area[player.position.Y + 1][player.position.X] == blok_pusty || area[player.position.Y + 1][player.position.X] == blok_zwykly || area[player.position.Y + 1][player.position.X] == blok_zwykly_ukruszony)
+		if (TheGameEngine.area[player.position.Y + 1][player.position.X] == blok_pusty || TheGameEngine.area[player.position.Y + 1][player.position.X] == blok_zwykly || TheGameEngine.area[player.position.Y + 1][player.position.X] == blok_zwykly_ukruszony)
 		{
-			TotalTurns++;
+			TheGameEngine.TotalTurns++;
 			Turns++;
-			if (area[player.position.Y + 1][player.position.X] == blok_zwykly)
+			if (TheGameEngine.area[player.position.Y + 1][player.position.X] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y + 1, blok_zwykly_ukruszony);
-				area[player.position.Y + 1][player.position.X] = blok_zwykly_ukruszony;
+				TheGameEngine.area[player.position.Y + 1][player.position.X] = blok_zwykly_ukruszony;
 			}
 			else
 			{
@@ -246,16 +246,16 @@ int playerClass::TryMove(char direction)
 		}
 		break;
 	case 77: //prawo
-		if (area[player.position.Y][player.position.X + 1] == blok_pusty || area[player.position.Y][player.position.X + 1] == blok_zwykly || area[player.position.Y][player.position.X + 1] == blok_zwykly_ukruszony)
+		if (TheGameEngine.area[player.position.Y][player.position.X + 1] == blok_pusty || TheGameEngine.area[player.position.Y][player.position.X + 1] == blok_zwykly || TheGameEngine.area[player.position.Y][player.position.X + 1] == blok_zwykly_ukruszony)
 		{
-			TotalTurns++;
+			TheGameEngine.TotalTurns++;
 			Turns++;
-			if (area[player.position.Y][player.position.X + 1] == blok_zwykly)
+			if (TheGameEngine.area[player.position.Y][player.position.X + 1] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
 				console::putCharXY(player.position.X - viewport.position.X + 1, player.position.Y - viewport.position.Y, blok_zwykly_ukruszony);
-				area[player.position.Y][player.position.X + 1] = blok_zwykly_ukruszony;
+				TheGameEngine.area[player.position.Y][player.position.X + 1] = blok_zwykly_ukruszony;
 			}
 			else
 			{
@@ -266,16 +266,16 @@ int playerClass::TryMove(char direction)
 		}
 		break;
 	case 75: //lewo
-		if (area[player.position.Y][player.position.X - 1] == blok_pusty || area[player.position.Y][player.position.X - 1] == blok_zwykly || area[player.position.Y][player.position.X - 1] == blok_zwykly_ukruszony)
+		if (TheGameEngine.area[player.position.Y][player.position.X - 1] == blok_pusty || TheGameEngine.area[player.position.Y][player.position.X - 1] == blok_zwykly || TheGameEngine.area[player.position.Y][player.position.X - 1] == blok_zwykly_ukruszony)
 		{
-			TotalTurns++;
+			TheGameEngine.TotalTurns++;
 			Turns++;
-			if (area[player.position.Y][player.position.X - 1] == blok_zwykly)
+			if (TheGameEngine.area[player.position.Y][player.position.X - 1] == blok_zwykly)
 			{
 				//nalezy ukruszyc blok
 				console::setColor(kolor_blok_zwykly);
 				console::putCharXY(player.position.X - viewport.position.X - 1, player.position.Y - viewport.position.Y, blok_zwykly_ukruszony);
-				area[player.position.Y][player.position.X - 1] = blok_zwykly_ukruszony;
+				TheGameEngine.area[player.position.Y][player.position.X - 1] = blok_zwykly_ukruszony;
 			}
 			else
 			{
@@ -288,7 +288,7 @@ int playerClass::TryMove(char direction)
 		break;
 	}
 
-	area[player.position.Y][player.position.X] = blok_pusty;
+	TheGameEngine.area[player.position.Y][player.position.X] = blok_pusty;
 
 	console::setColor(0x0F);
 
@@ -308,7 +308,7 @@ void playerClass::Move()
 
 		if (znak == 72 || znak == 80 || znak == 77 || znak == 75)
 		{
-			if (GameState == 1)
+			if (TheGameEngine.GameState == 1)
 			{
 				gameEngine::ClearLog();
 				RegenerateLife();
@@ -327,7 +327,7 @@ void playerClass::Move()
 
 		if (znak == 32) //space pressed
 		{
-			if (GameState == 1)
+			if (TheGameEngine.GameState == 1)
 			{
 				gameEngine::ClearLog();
 				RegenerateLife();
@@ -373,9 +373,9 @@ void map::InitializeLevel(int level)
 		for (y = 0; y < MapMaxY; y++)
 		{
 			if (x == 0 || x == MapMaxX - 1 || y == 0 || y == MapMaxY - 1)
-				area[y][x] = blok_staly; //otaczanie mapy nierozbijalnymi blokami
+				TheGameEngine.area[y][x] = blok_staly; //otaczanie mapy nierozbijalnymi blokami
 			else
-				area[y][x] = blok_zwykly; // wypelnianie mapy blokami do rozwalenia
+				TheGameEngine.area[y][x] = blok_zwykly; // wypelnianie mapy blokami do rozwalenia
 		}
 	}
 
@@ -411,7 +411,7 @@ void map::InitializeLevel(int level)
 		tmp.X = mathem::RandomInt(1, MapMaxX - 1);
 		tmp.Y = mathem::RandomInt(1, MapMaxX - 1);
 
-		if (area[tmp.Y][tmp.X] == blok_pusty)
+		if (TheGameEngine.area[tmp.Y][tmp.X] == blok_pusty)
 		{
 			COORD tmp2;
 			tmp2.X = tmp.Y;
@@ -419,7 +419,7 @@ void map::InitializeLevel(int level)
 			e.position = tmp;
 			//wylosowana pozycja jest pusta. Stawianie przeciwnika
 			enemies[i] = e;
-			area[tmp.Y][tmp.X] = blok_przeciwnik;
+			TheGameEngine.area[tmp.Y][tmp.X] = blok_przeciwnik;
 		}
 		else
 			i--;
@@ -444,14 +444,14 @@ void map::InitializeLevel(int level)
 void map::AddCaveSegment(COORD punkt)
 {
 	int a = mathem::RandomInt(0, 100);
-	unsigned char b = area[punkt.Y][punkt.X];
+	unsigned char b = TheGameEngine.area[punkt.Y][punkt.X];
 	unsigned char c = blok_zwykly;
 
 
 	if (b == blok_zwykly && a<CaveSize || CaveSegments<MinCaveSize && b == blok_zwykly)
 	{
 		CaveSegments++;
-		area[punkt.Y][punkt.X] = blok_pusty;
+		TheGameEngine.area[punkt.Y][punkt.X] = blok_pusty;
 
 
 		//generowanie segmentow dla sasiednich 4 pol
@@ -481,7 +481,7 @@ void map::PlacePlayer()
 	tmp.position.X = mathem::RandomInt(1, MapMaxX - 1);
 	tmp.position.Y = mathem::RandomInt(1, MapMaxY - 1);
 
-	unsigned char b = area[tmp.position.Y][tmp.position.X];
+	unsigned char b = TheGameEngine.area[tmp.position.Y][tmp.position.X];
 	unsigned char c = blok_pusty;
 
 	if (b == c)
@@ -514,7 +514,7 @@ void map::PlacePortal()
 	tmp.position.X = mathem::RandomInt(1, MapMaxX - 1);
 	tmp.position.Y = mathem::RandomInt(1, MapMaxY - 1);
 
-	unsigned char b = area[tmp.position.Y][tmp.position.X];
+	unsigned char b = TheGameEngine.area[tmp.position.Y][tmp.position.X];
 	unsigned char c = blok_pusty;
 
 	if (b == c)
@@ -544,7 +544,7 @@ void playerClass::Atack()
 		int s = mathem::CalculateDistance(enemies[i].position, player.position);
 		if (mathem::CalculateDistance(enemies[i].position, player.position) <= 1) //jestli gracz jest obok przeciwnika
 		{
-			TotalTurns++;
+			TheGameEngine.TotalTurns++;
 			Turns++;
 			int obrazenia = mathem::RandomInt(MinDamageMultiplier*player.damage, player.damage);
 
@@ -552,13 +552,13 @@ void playerClass::Atack()
 			gameEngine::Log("Zadane obra¾enia", obrazenia);
 			if (enemies[i].hp <= obrazenia)//cios zabija przeciwnika
 			{
-				EnemiesKilled++;
+				TheGameEngine.EnemiesKilled++;
 				COORD tmp = map::GetOnScreenPos(enemies[i].position);
 
 				console::putCharXY(tmp.X, tmp.Y, blok_pusty); //usuniecie przeciwnika z widoku
 
 															  //usuniecie przeciwnika z mapy
-				area[enemies[i].position.Y][enemies[i].position.X] = blok_pusty;
+				TheGameEngine.area[enemies[i].position.Y][enemies[i].position.X] = blok_pusty;
 				enemies[i].position.X = 0;
 				enemies[i].position.Y = 0;//ustawienie przeciwnika jako niezywego
 
@@ -600,7 +600,7 @@ void playerClass::Atack()
 //DO GRACZA
 void playerClass::Death()
 {
-	GameState = 0;
+	TheGameEngine.GameState = 0;
 
 	gameEngine::ShowDeathScreen();
 
@@ -624,6 +624,6 @@ void map::CheckPortal() //sprawdza, czy gracz nie  wszedl w portal
 {
 	if (player.position.X == portal.position.X && player.position.Y == portal.position.Y)
 	{
-		map::InitializeLevel(++CurrentLevel);
+		map::InitializeLevel(++TheGameEngine.CurrentLevel);
 	}
 }
