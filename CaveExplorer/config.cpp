@@ -31,7 +31,6 @@ bool config::loadMainConfig()
 
 	//wczytywanie pliku config
 	std::string path = "config" + config_extension;
-	std::cout << "config path: " << path << std::endl;
 	gameConfig.clearCml();
 	gameConfig.changeFile(path);
 	gameConfig.loadSection("Default");
