@@ -11,7 +11,7 @@ gameEngine TheGameEngine;
 int main()
 {
 
-	if (!config::loadMainConfig()) {
+	if (!config::loadMainConfigWithLog()) {
 		std::cout << "Pliki gry zostaly uszkodzone! Gra nie moze zostac wczytana..." << std::endl;
 		system("Pause");
 		return 0;

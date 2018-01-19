@@ -18,7 +18,7 @@ public:
 
 	void add(std::string ke, type va);
 	void clearContainer();
-	type& find(std::string requestValue);
+	type find(std::string requestValue);
 	bool good() const;
 	unsigned int getLength();
 	void coppyContainer(container<type>& from);
@@ -40,6 +40,8 @@ class cml
 {
 	std::fstream file;
 	std::string filePath;
+	
+	std::string tmpFolderPath = "_tmp\\";
 
 	//private methods
 	template<class t>
@@ -58,13 +60,14 @@ public:
 	bool good() const;
 	bool goodFile() const;
 	bool goodData() const;
-	type& findKey(std::string request);
+	type findKey(std::string request);
 	void loadSection(std::string request);
 	void loadKey(std::string requestKey, std::string requestSection = "");
 	void loadFile();
 	static type readKey(std::string path, std::string requestKey, std::string requestSection = "");
-	std::string givePath();
+	std::string getPath();
 	void changeFile(std::string path);
+	void changeFileValue(std::string reqKey, std::string desValue, std::string reqSection = "");
 };
 
 
@@ -122,10 +125,17 @@ inline void container<type>::clearContainer(){
 }
 
 template<class type>
-inline type& container<type>::find(std::string requestValue){
+inline type container<type>::find(std::string requestValue){
 	for (int i = 0; i < length; i++) 
 		if (requestValue == key[i]) return value[i];
 	return type();
+}
+
+template<>
+inline std::string container<std::string>::find(std::string requestValue) {
+	for (int i = 0; i < length; i++)
+		if (requestValue == key[i]) return value[i];
+	return "__ERROR__";
 }
 
 template<class type>
@@ -204,6 +214,7 @@ inline cml<type>::cml(){
 //constructors
 template<class type>
 inline cml<type>::cml(std::string path) {
+	file.clear();
 	file.open(path, std::ios::in | std::ios::binary);
 	filePath = path;
 }
@@ -216,7 +227,7 @@ inline cml<type>::~cml(){
 
 //methods
 template<class type>
-inline type& cml<type>::findKey(std::string request){
+inline type cml<type>::findKey(std::string request){
 	return data.find(request);
 }
 
@@ -224,6 +235,7 @@ template<class type>
 inline void cml<type>::clearCml(){
 	data.clearContainer();
 	file.close();
+	file.clear();
 }
 
 template<class type>
@@ -377,15 +389,52 @@ inline type cml<type>::readKey(std::string path, std::string requestKey, std::st
 }
 
 template<class type>
-inline std::string cml<type>::givePath(){
+inline std::string cml<type>::getPath(){
 	return filePath;
 }
 
 template<class type>
 inline void cml<type>::changeFile(std::string path){
 	file.close();
+	file.clear();
 	file.open(path, std::ios::in | std::ios::binary);
 	filePath = path;
+}
+
+template<class type> //spaghetti, nie do przerobienia. Sam bym tego nie chcia³ robiæ
+inline void cml<type>::changeFileValue(std::string reqKey, std::string desValue, std::string reqSection){
+	std::string line;
+	std::string allLines;
+	bool lastSection = false; 
+	if (reqSection == "") lastSection = true;
+	
+	file.seekg(0);
+
+	do {
+		std::getline(file, line);
+
+		if (reqSection != "" && line.find("[" + reqSection + "]"))
+			lastSection = true;
+		
+		if (line.find("<" + reqKey + ">") < 100 && line.find("<" + reqKey + ">") >= 0 && lastSection) {
+			std::string tmp = line;
+			int firSymbol = line.find('\"');
+			tmp.erase(0, firSymbol + 1);
+			int secSymbol = tmp.find('\"') + firSymbol + 1;		
+			line.erase(firSymbol + 1, secSymbol - firSymbol - 1);
+			line.insert(firSymbol + 1, desValue);
+		}
+		allLines += line + '\n';
+	} while (!file.eof());
+
+	std::fstream tmpFile;
+	tmpFile.open(filePath, std::ios::out);
+	tmpFile << allLines;
+	tmpFile.close();
+
+	changeFile(filePath);
+
+	file.seekg(0);
 }
 
 template<class type>

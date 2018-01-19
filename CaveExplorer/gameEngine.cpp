@@ -410,7 +410,7 @@ void gameEngine::InitGui()
 	console::putStrXY(ViewportW + 2, 8, gameLang.findKey("Portal").c_str());
 }
 
-void gameEngine::Log(char* text, int num)
+void gameEngine::Log(const char* text, int num)
 {
 
 
@@ -519,10 +519,20 @@ void gameEngine::ShowOptions(int initialGameState)
 		menuIndex = 0;
 
 	int curH = 0;
+	std::string langPos = "";
+	int i = 1;
+	for (i = 1; i <= languages.data.getLength(); i++) {
+		langPos = i + 48;
+		if (languages.findKey(langPos) == gameConfig.findKey("Language")) {
+			langPos = tmp;
+			break;
+		}
+	}
+
 	do
 	{
 		system("cls");
-
+		
 		console::drawMenuItem(10, 10 + 6*curH, color_menu, ">");
 
 		console::drawMenuItem(16, 10, color_menu, menuLang.findKey("Saving_System").c_str());
@@ -532,7 +542,7 @@ void gameEngine::ShowOptions(int initialGameState)
 			console::drawMenuItem(16 + 37, 10, 0x0A, menuLang.findKey("No").c_str()); //prawo
 
 		console::drawMenuItem(16, 16, color_menu, menuLang.findKey("Change_Language").c_str());
-		console::drawMenuItem(16 + 37, 16, 0x0A, gameConfig.find("Language").c_str()); //lewo
+		console::drawMenuItem(16 + 37, 16, 0x0A, gameConfig.findKey("Language").c_str());
 
 		c = console::getKey();
 
@@ -550,13 +560,12 @@ void gameEngine::ShowOptions(int initialGameState)
 				TheGameEngine.GameSaveLoad = 1;
 				menuIndex++;
 			}
-			else if (curH == 1 && gameConfig.find("Language") == "polish") {
-				gameConfig.changeValue("Language", "english");
-				config::loadLanguage();
-			}
-			else if (curH == 1 && gameConfig.find("Language") == "english") {
-				gameConfig.changeValue("Language", "polish");
-				config::loadLanguage();
+			else if (curH == 1) {
+				i--;
+				if (i <= 0) i = languages.data.getLength();
+				langPos = i + 48;
+				gameConfig.changeFileValue("Language", languages.findKey((langPos)), "Default");
+				config::loadMainConfig();
 			}
 		}
 
@@ -567,13 +576,12 @@ void gameEngine::ShowOptions(int initialGameState)
 				TheGameEngine.GameSaveLoad = 0;
 				menuIndex--;
 			}
-			else if (curH == 1 && gameConfig.find("Language") == "polish") {
-				gameConfig.changeValue("Language", "english");
-				config::loadLanguage();
-			}
-			else if (curH == 1 && gameConfig.find("Language") == "english") {
-				gameConfig.changeValue("Language", "polish");
-				config::loadLanguage();
+			else if (curH == 1) {
+				i++;
+				if (i > languages.data.getLength()) i = 1;
+				langPos = i + 48;
+				gameConfig.changeFileValue("Language", languages.findKey((langPos)), "Default");
+				config::loadMainConfig();
 			}
 		}
 

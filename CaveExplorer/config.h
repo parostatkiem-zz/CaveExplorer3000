@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
+#include <math.h>
 #include "math.h"
 
 #include <iostream>
@@ -79,9 +80,10 @@
 #define color_logo 0x05
 
 //configi i pliki jêzykowe
-extern container<std::string> gameConfig;
+extern cml<std::string> gameConfig;
 extern cml<std::string> menuLang;
 extern cml<std::string> gameLang;
+extern cml<std::string> languages;
 
 
 extern mapObject viewport;
@@ -96,4 +98,5 @@ class config {
 public:
 	static void loadLanguage();
 	static bool loadMainConfig();
+	static bool loadMainConfigWithLog();
 };

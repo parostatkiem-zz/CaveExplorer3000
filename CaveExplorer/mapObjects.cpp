@@ -23,7 +23,7 @@ void enemy::MoveEnemies()
 				if (player.hp - obrazenia > 0)
 				{
 					player.hp -= obrazenia; //gracz otrzymuje cios
-					gameEngine::Log("Otrzymaˆe˜ obra¾enia", -obrazenia);
+					gameEngine::Log(gameLang.findKey("Damage_Received").c_str(), -obrazenia);
 				}
 				else
 					player.Death();   //gracz umiera
@@ -597,7 +597,7 @@ void playerClass::Atack()
 			int obrazenia = mathem::RandomInt(MinDamageMultiplier*player.damage, player.damage);
 
 
-			gameEngine::Log("Zadane obra¾enia", obrazenia);
+			gameEngine::Log(gameLang.findKey("Inflicted_Damage").c_str(), obrazenia);
 			if (enemies[i].hp <= obrazenia)//cios zabija przeciwnika
 			{
 				TheGameEngine.EnemiesKilled++;
@@ -611,7 +611,7 @@ void playerClass::Atack()
 				enemies[i].position.Y = 0;//ustawienie przeciwnika jako niezywego
 
 
-				gameEngine::Log("Zabiˆe˜ przeciwnika!", 0);
+				gameEngine::Log(gameLang.findKey("Enemie_Killed").c_str(), 0);
 
 
 				if (player.exp >= ExpToNextLevel)
@@ -619,11 +619,11 @@ void playerClass::Atack()
 					//gracz awansuje na nowy level
 					player.level++;
 
-					player.exp = -1;
+					player.exp = -1; 
 
 					player.damage *= PlayerDamageMultiplier;
 
-					gameEngine::Log("Awansowaˆe˜ na wy¾szy poziom!!", 0);
+					gameEngine::Log(gameLang.findKey("You_Advanced").c_str(), 0);
 
 
 				}
@@ -669,7 +669,7 @@ void playerClass::RegenerateLife()
 
 void playerClass::PickGold()
 {
-	gameEngine::Log("Podniosles zloto!", 0);
+	gameEngine::Log(gameLang.findKey("Gold_Was_Picked_Up").c_str(), 0);
 	gold++;
 
 }
