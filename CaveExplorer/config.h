@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
+#include <math.h>
 #include "math.h"
 
 #include <iostream>
@@ -14,6 +15,7 @@
 #include "gameEngine.h"
 #include "gameSave.h" 
 #include "mapObjects.h"
+#include "confStaff.h"
 
 
 
@@ -77,11 +79,11 @@
 #define color_menu 0x05
 #define color_logo 0x05
 
-//scie¿ki do plików
-#define language_path "Language\\"
-#define language_extension ".cml"
-
-
+//configi i pliki jêzykowe
+extern cml<std::string> gameConfig;
+extern cml<std::string> menuLang;
+extern cml<std::string> gameLang;
+extern cml<std::string> languages;
 
 
 extern mapObject viewport;
@@ -92,3 +94,9 @@ extern gameEngine TheGameEngine;
 
 
 
+class config {
+public:
+	static void loadLanguage();
+	static bool loadMainConfig();
+	static bool loadMainConfigWithLog();
+};
