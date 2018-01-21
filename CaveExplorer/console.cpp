@@ -163,9 +163,9 @@ void console::shopGUI::showItemsMenu()
 	
 	char buf2[256];
 	unsigned char c;
-	console::drawMenuItem(13, 1, color_block_gold, "SKLEP U CZESIA"); //TODO translate
-	console::drawMenuItem(13+30, 1, color_block_static , "STAT"); //TODO translate
-	console::drawMenuItem(13 + 50, 1, color_block_static, "CENA"); //TODO translate
+	console::drawMenuItem(13, 1, color_block_gold, gameLang.findKey("Shop_Title").c_str()); 
+	console::drawMenuItem(13+30, 1, color_block_static , gameLang.findKey("Shop_Stat").c_str()); 
+	console::drawMenuItem(13 + 50, 1, color_block_static, gameLang.findKey("Shop_Price").c_str()); 
 	do
 	{
 		for (int i = 0; i < theShop.items.capacity(); i++)

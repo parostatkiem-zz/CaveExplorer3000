@@ -1,6 +1,5 @@
 //CAVE EXPLORER 
 #include "config.h"
-#include "confStaff.h"
 
 
 playerClass player;
@@ -16,7 +15,16 @@ using namespace std;
 
 int main()
 {
-	//gameEngine::FillShopItemsPrototype();
+
+
+
+	if (!config::loadMainConfigWithLog()) {
+		std::cout << "Pliki gry zostaly uszkodzone! Gra nie moze zostac wczytana..." << std::endl;
+		system("Pause");
+		return 0;
+	}
+
+
 	console::initScreen();
 
 

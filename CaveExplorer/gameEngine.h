@@ -44,7 +44,7 @@ public:
 	//wstawia gui w trakcie gry
 	static void InitGui();
 
-	static void Log(char* text, int num);
+	static void Log(const char* text, int num);
 
 	static void ClearLog();
 
