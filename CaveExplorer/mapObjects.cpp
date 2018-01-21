@@ -1,5 +1,5 @@
 #include "config.h"
-
+#include <algorithm>
 
 
 void enemy::MoveEnemies()
@@ -358,6 +358,7 @@ void playerClass::getKey()
 				RegenerateLife();
 				player.TryMove(inputChar);
 				map::CheckPortal();
+				map::CheckShop();
 				enemy::MoveEnemies();
 				map::CheckRefresh();
 				gameEngine::RefreshGui();
@@ -606,24 +607,19 @@ void map::PlaceShop()
 
 void shop::flushItems()
 {
-	items.clear();
-	shopItem tmp;
-	for(int i=0;i<ShopItemTypesAmount;i++)
+	int i;
+	int value;
+	for ( i = 0; i < theShop.items.capacity(); i++)
 	{
-		//dla kazdego typu broni
-		for (int z = 0; z < ShopItemsOfEveryType; z++)
-		{
-			//dla kazdej sztuki z danego typu
-			tmp.type = i;
-			tmp.bonus = mathem::RandomInt(-2, 3); //losowanie bonusa
-			tmp.price = tmp.bonus * 12;
-			if (tmp.price < 1)
-				tmp.price = 1;
-			
-			items.push_back(tmp);
-		}
-
+		value = mathem::RandomInt(-3, 6);
+		theShop.items[i].bonus = value;
+		if (value < 1)
+			theShop.items[i].price = 0;
+		else
+			theShop.items[i].price = value*9;
 	}
+
+	
 }
 
 //GRACZ
@@ -728,5 +724,36 @@ void map::CheckPortal() //sprawdza, czy gracz nie  wszedl w portal
 	if (player.position.X == portal.position.X && player.position.Y == portal.position.Y)
 	{
 		map::InitializeLevel(++TheGameEngine.CurrentLevel);
+	}
+}
+
+void map::CheckShop() //sprawdza, czy gracz nie  wszedl w portal
+{
+	if (player.position.X == theShop.position.X && player.position.Y == theShop.position.Y) //TODO
+	{
+		//map::InitializeLevel(++TheGameEngine.CurrentLevel);
+		console::shopGUI::showItemsMenu();
+	}
+}
+
+void shop::buyItem(int index)
+{
+	if (player.gold >= items[index].price)
+	{
+		if (items[index].type == 0)
+		{
+			player.damage += items[index].bonus;
+		}
+		if (items[index].type == 1)
+		{
+			player.maxhp += items[index].bonus;
+		}
+
+		gameEngine::Log("Kupiles wybrany przedmiot!", 0);
+	}
+	else
+	{
+		//nie stac cie
+		gameEngine::Log("Nie stac Cie na wybrany przedmiot.",0);
 	}
 }

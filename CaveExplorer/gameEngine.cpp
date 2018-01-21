@@ -206,7 +206,7 @@ void gameEngine::RefreshMap()
 	//system("CLS");
 	//InitGui();
 	//RefreshGui();
-	ClearLog();
+	//ClearLog();
 
 	if (TheGameEngine.GameState != 1)
 		return;
@@ -591,4 +591,5 @@ void gameEngine::DrawLogo()
 	console::putStrXY(60, 20, "by  Jan Sudczak & Filip Strozik");
 	console::setColor(0x0F);
 }
+
 

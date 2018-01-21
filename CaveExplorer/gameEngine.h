@@ -1,5 +1,5 @@
 #pragma once
-#include "config.h"
+
 #include "time.h"
 
 class mathem
@@ -34,6 +34,7 @@ public:
 	 unsigned int Turns;
 	 unsigned int CaveSegments;
 
+
 	//reset mapy podczas rozgrywki
 	static void RefreshMap();
 
@@ -52,6 +53,8 @@ public:
 	static void ShowOptions(int initialGameState);
 
 	static void DrawLogo();
+
+	
 	//static void ShowShopMenu(shop* theShop);
 	gameEngine()
 	{
@@ -62,6 +65,9 @@ public:
 		EnemiesKilled = 0;
 		GameSaveLoad = 0;
 	}
+	
+
+
 };
 
 

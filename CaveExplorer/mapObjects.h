@@ -51,34 +51,46 @@ public:
 	static COORD GetOnScreenPos(COORD p);
 	static void PlacePortal();
 	static void CheckPortal();
+	static void CheckShop();
 	static void PlaceShop();
+
 };
 
-class ShopItemType
-{
-	int value = 0;//0=weapon, 1= armor
-	string bonusUnit = "DMG"; 
-
-	//mo¿na dodaæ wiêcej w przysz³oœci
-public:
-	ShopItemType(int _value, string _bonusUnit )
-	{
-		value = _value;
-		bonusUnit = _bonusUnit;
-	}
-	ShopItemType()
-	{}
-};
+//class ShopItemType
+//{
+//public:
+//	int value = 0;//0=weapon, 1= armor
+//	string bonusUnit = "DMG"; 
+//	string availableNames[3];
+//	//mo¿na dodaæ wiêcej w przysz³oœci
+//
+//	ShopItemType(int _value, string _bonusUnit, string _names[3])
+//	{
+//		value = _value;
+//		bonusUnit = _bonusUnit;
+//		
+//	}
+//	ShopItemType()
+//	{}
+//};
 
 class shopItem
 {
 public:
+	string name = "";
+	string bonusUnit = "";
 	int type;
+
 	int price = 0;
 	int bonus = 0;
 	
-	shopItem()
-	{}
+	shopItem(int _type, string _name, string _bonusUnit)
+	{
+		type = _type;
+		name = _name;
+		bonusUnit = _bonusUnit;
+	}
+	shopItem() {}
 };
 
 class shop : public mapObject
@@ -89,5 +101,22 @@ public:
 	vector<shopItem> items;
 
 	void flushItems();
+
+	shop()
+	{
+		//ustawienie domyœlnych przedmiotów nastepuje tutaj
+		items.push_back(*(new shopItem(0, "Miecz", "DMG")));
+		items.push_back(*(new shopItem(0, "Topor", "DMG")));
+		items.push_back(*(new shopItem(0, "Maczuga", "DMG")));
+
+		items.push_back(*(new shopItem(1, "Tarcza", "HP")));
+		items.push_back(*(new shopItem(1, "Zbroja", "HP")));
+		items.push_back(*(new shopItem(1, "Helm", "HP")));
+
+		flushItems();
+	}
+
+	void buyItem(int index);
+	
 };
 

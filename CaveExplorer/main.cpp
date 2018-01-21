@@ -10,13 +10,13 @@ shop theShop;
 enemy enemies[MaxEnemyNum] ;
 gameEngine TheGameEngine;
 
-static ShopItemType shopItemTypes[ShopItemTypesAmount];
+
+
+using namespace std;
 
 int main()
 {
-	shopItemTypes[0] = { 0, "DMG" }; //weapon
-	shopItemTypes[1] = { 1, "HP" }; //armor
-	
+	//gameEngine::FillShopItemsPrototype();
 	console::initScreen();
 
 

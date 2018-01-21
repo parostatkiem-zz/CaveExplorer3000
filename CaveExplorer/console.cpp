@@ -1,5 +1,7 @@
 #include "config.h"
 
+
+
 void console::SetConsoleWindowSize(int x, int y) {
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -152,3 +154,102 @@ void console::drawMenuItem(int x, int y, unsigned short c, const char *s)
 
 }
 
+
+void console::shopGUI::showItemsMenu()
+{
+	system("CLS");
+	unsigned char menuIndex = 0;
+	short colors[6] = { 0 };
+	
+	char buf2[256];
+	unsigned char c;
+	console::drawMenuItem(13, 1, color_block_gold, "SKLEP U CZESIA"); //TODO translate
+	console::drawMenuItem(13+30, 1, color_block_static , "STAT"); //TODO translate
+	console::drawMenuItem(13 + 50, 1, color_block_static, "CENA"); //TODO translate
+	do
+	{
+		for (int i = 0; i < theShop.items.capacity(); i++)
+		{
+			if (menuIndex == i)
+			{
+				colors[i] = color_menu_active;
+			}
+			else
+			{
+				colors[i] = color_menu;
+			}
+
+
+		}
+
+
+		
+		for (int i = 0; i < theShop.items.capacity(); i++)
+		{
+			console::drawMenuItem(17, 5+4*i, colors[i],theShop.items[i].name.c_str());
+			snprintf(buf2, sizeof buf2, "%d %s", theShop.items[i].bonus, theShop.items[i].bonusUnit.c_str()); //nazwa
+			console::drawMenuItem(17 + 25, 5 + 4 * i , colors[i],buf2); //staty
+			snprintf(buf2, sizeof buf2, "%d", theShop.items[i].price);
+			console::drawMenuItem(17 + 47, 5 + 4 * i, colors[i], buf2); //cena
+		}
+
+	
+
+
+
+		//console::drawMenuItem(24, 17, colors[2], "Test2");
+
+
+
+		c = console::getKey();
+
+
+		if (c == 72) //gora
+		{
+			if (menuIndex > 0)
+			{
+				menuIndex--;
+			}
+		}
+
+		if (c == 80)//dol
+		{
+			if (menuIndex < theShop.items.capacity()-1)
+			{
+				menuIndex++;
+			}
+		}
+		if (c == 13)//enter
+		{
+			try //just in case
+			{
+				theShop.buyItem(menuIndex);
+			}
+			catch(exception ex) {};
+			theShop.flushItems();
+			break;
+
+		}
+		if (c == 27) //escape pressed
+		{
+			break;
+		}
+
+
+
+
+	} while (1);
+	hideItemsMenu();
+	return;
+}
+
+void console::shopGUI::hideItemsMenu()
+{
+
+//	system("CLS");
+	
+	gameEngine::InitGui();
+	gameEngine::RefreshGui();
+
+	gameEngine::RefreshMap();
+}
