@@ -187,7 +187,7 @@ void console::shopGUI::showItemsMenu()
 		for (int i = 0; i < theShop.items.capacity(); i++)
 		{
 			console::drawMenuItem(17, 5+4*i, colors[i],theShop.items[i].name.c_str());
-			snprintf(buf2, sizeof buf2, "%d %s", theShop.items[i].bonus, theShop.items[i].bonusUnit.c_str()); //nazwa
+			snprintf(buf2, sizeof buf2, "%s %d", theShop.items[i].bonusUnit.c_str(), theShop.items[i].bonus); //nazwa
 			console::drawMenuItem(17 + 25, 5 + 4 * i , colors[i],buf2); //staty
 			snprintf(buf2, sizeof buf2, "%d", theShop.items[i].price);
 			console::drawMenuItem(17 + 47, 5 + 4 * i, colors[i], buf2); //cena
