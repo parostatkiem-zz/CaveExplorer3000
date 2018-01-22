@@ -233,6 +233,7 @@ int playerClass::TryMove(char direction)
 				player.position.Y--;
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, block_player);
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y + 1, block_empty);
+				TheGameEngine.area[player.position.Y - 1][player.position.X] = block_empty;
 			}
 		}
 		break;
@@ -264,6 +265,7 @@ int playerClass::TryMove(char direction)
 				player.position.Y++;
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, block_player);
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y - 1, block_empty);
+				TheGameEngine.area[player.position.Y + 1][player.position.X] = block_empty;
 			}
 		}
 		break;
@@ -295,6 +297,7 @@ int playerClass::TryMove(char direction)
 				player.position.X++;
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, block_player);
 				console::putCharXY(player.position.X - viewport.position.X - 1, player.position.Y - viewport.position.Y, block_empty);
+				TheGameEngine.area[player.position.Y][player.position.X + 1] = block_empty;
 			}
 		}
 		break;
@@ -326,6 +329,7 @@ int playerClass::TryMove(char direction)
 				player.position.X--;
 				console::putCharXY(player.position.X - viewport.position.X, player.position.Y - viewport.position.Y, block_player);
 				console::putCharXY(player.position.X - viewport.position.X + 1, player.position.Y - viewport.position.Y, block_empty);
+				TheGameEngine.area[player.position.Y][player.position.X - 1] = block_empty;
 			}
 
 		}
