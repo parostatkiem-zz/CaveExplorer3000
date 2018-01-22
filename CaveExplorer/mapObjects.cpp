@@ -331,8 +331,15 @@ int playerClass::TryMove(char direction)
 		}
 		break;
 	}
+	 mapObject tmp2;
 
-	TheGameEngine.area[player.position.Y][player.position.X] = block_empty;
+	//czy sklep jest w zasiegu mapy
+	tmp2.position = map::GetOnScreenPos(theShop.position);
+	if (tmp2.position.X >= 0 && tmp2.position.X <= ViewportW && tmp2.position.Y >= 0 && tmp2.position.Y <= ViewportH)
+	{
+		console::setColor(color_shop);
+		console::putCharXY(theShop.position.X - viewport.position.X, theShop.position.Y - viewport.position.Y, block_shop);
+	}
 
 	console::setColor(0x0F);
 
