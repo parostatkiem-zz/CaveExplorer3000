@@ -206,7 +206,7 @@ void gameEngine::RefreshMap()
 	//system("CLS");
 	//InitGui();
 	//RefreshGui();
-	ClearLog();
+	//ClearLog();
 
 	if (TheGameEngine.GameState != 1)
 		return;
@@ -284,6 +284,14 @@ void gameEngine::RefreshMap()
 	{
 		console::setColor(color_portal);
 		console::putCharXY(portal.position.X - viewport.position.X, portal.position.Y - viewport.position.Y, block_portal);
+	}
+
+	//czy sklep jest w zasiegu mapy
+	tmp.position = map::GetOnScreenPos(theShop.position);
+	if (tmp.position.X >= 0 && tmp.position.X <= ViewportW && tmp.position.Y >= 0 && tmp.position.Y <= ViewportH)
+	{
+		console::setColor(color_shop);
+		console::putCharXY(theShop.position.X - viewport.position.X, theShop.position.Y - viewport.position.Y, block_shop);
 	}
 	console::setColor(0x0F);
 }
@@ -447,7 +455,7 @@ void gameEngine::ClearLog()
 	int i = 0;
 	for (i = 11; i < ViewportH; i++)
 	{
-		console::putStrXY(ViewportW + 1, i, "                                      ");
+		console::putStrXY(ViewportW + 0, i, "                                      ");
 	}
 }
 
@@ -614,4 +622,5 @@ void gameEngine::DrawLogo()
 	console::putStrXY(60, 20, "by  Jan Sudczak & Filip Strozik");
 	console::setColor(0x0F);
 }
+
 

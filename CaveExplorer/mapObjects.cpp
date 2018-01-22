@@ -1,5 +1,5 @@
 #include "config.h"
-
+#include <algorithm>
 
 
 void enemy::MoveEnemies()
@@ -331,8 +331,15 @@ int playerClass::TryMove(char direction)
 		}
 		break;
 	}
+	 mapObject tmp2;
 
-	TheGameEngine.area[player.position.Y][player.position.X] = block_empty;
+	//czy sklep jest w zasiegu mapy
+	tmp2.position = map::GetOnScreenPos(theShop.position);
+	if (tmp2.position.X >= 0 && tmp2.position.X <= ViewportW && tmp2.position.Y >= 0 && tmp2.position.Y <= ViewportH)
+	{
+		console::setColor(color_shop);
+		console::putCharXY(theShop.position.X - viewport.position.X, theShop.position.Y - viewport.position.Y, block_shop);
+	}
 
 	console::setColor(0x0F);
 
@@ -358,6 +365,7 @@ void playerClass::getKey()
 				RegenerateLife();
 				player.TryMove(inputChar);
 				map::CheckPortal();
+				map::CheckShop();
 				enemy::MoveEnemies();
 				map::CheckRefresh();
 				gameEngine::RefreshGui();
@@ -480,6 +488,8 @@ void map::InitializeLevel(int level)
 
 	PlacePortal();
 
+	PlaceShop();
+
 	gameEngine::RefreshMap();
 	gameEngine::InitGui();
 	gameEngine::RefreshGui();
@@ -559,8 +569,8 @@ COORD map::GetOnScreenPos(COORD p)
 void map::PlacePortal()
 {
 	mapObject tmp;
-	tmp.position.X = mathem::RandomInt(2, MapMaxX - 1);
-	tmp.position.Y = mathem::RandomInt(2, MapMaxY - 1);
+	tmp.position.X = mathem::RandomInt(8, MapMaxX - 7);
+	tmp.position.Y = mathem::RandomInt(8, MapMaxY - 7);
 
 	unsigned char b = TheGameEngine.area[tmp.position.Y][tmp.position.X];
 	unsigned char c = block_empty;
@@ -577,6 +587,46 @@ void map::PlacePortal()
 		PlacePortal();
 	}
 
+}
+
+//DO MAPY
+void map::PlaceShop()
+{
+	shop tmp;
+	tmp.position.X = mathem::RandomInt(portal.position.X-5, portal.position.X + 5);
+	tmp.position.Y = mathem::RandomInt(portal.position.Y - 5, portal.position.Y + 5);
+
+	unsigned char b = TheGameEngine.area[tmp.position.Y][tmp.position.X];
+	unsigned char c = block_empty;
+
+	if (b == c && portal.position.X!=tmp.position.X && portal.position.Y != tmp.position.Y)
+	{
+		theShop.position = tmp.position;
+		theShop.flushItems();
+		return;
+	}
+	else
+	{
+		PlaceShop();
+	}
+
+}
+
+void shop::flushItems()
+{
+	int i;
+	int value;
+	for ( i = 0; i < theShop.items.capacity(); i++)
+	{
+		value = mathem::RandomInt(-3, 6);
+		theShop.items[i].bonus = value;
+		if (value < 1)
+			theShop.items[i].price = 0;
+		else
+			theShop.items[i].price = value*9;
+	}
+
+	
 }
 
 //GRACZ
@@ -613,6 +663,7 @@ void playerClass::Atack()
 
 				gameEngine::Log(gameLang.findKey("Enemie_Killed").c_str(), 0);
 
+				player.PickGold();
 
 				if (player.exp >= ExpToNextLevel)
 				{
@@ -680,5 +731,36 @@ void map::CheckPortal() //sprawdza, czy gracz nie  wszedl w portal
 	if (player.position.X == portal.position.X && player.position.Y == portal.position.Y)
 	{
 		map::InitializeLevel(++TheGameEngine.CurrentLevel);
+	}
+}
+
+void map::CheckShop() //sprawdza, czy gracz nie  wszedl w portal
+{
+	if (player.position.X == theShop.position.X && player.position.Y == theShop.position.Y) //TODO
+	{
+		//map::InitializeLevel(++TheGameEngine.CurrentLevel);
+		console::shopGUI::showItemsMenu();
+	}
+}
+
+void shop::buyItem(int index)
+{
+	if (player.gold >= items[index].price)
+	{
+		if (items[index].type == 0)
+		{
+			player.damage += items[index].bonus;
+		}
+		if (items[index].type == 1)
+		{
+			player.maxhp += items[index].bonus;
+		}
+
+		gameEngine::Log(gameLang.findKey("Purchased_Item_Success").c_str(), 0);
+	}
+	else
+	{
+		//nie stac cie
+		gameEngine::Log(gameLang.findKey("Purchased_Item_Fail").c_str(), 0);
 	}
 }

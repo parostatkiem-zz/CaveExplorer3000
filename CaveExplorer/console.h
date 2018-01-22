@@ -24,4 +24,12 @@ public:
 
 	//Wypisanie tekstu w ramce
 	static void drawMenuItem(int x, int y, unsigned short c, const char *s);
+
+	static class shopGUI
+	{
+	public:
+		static void showItemsMenu();
+		//static void buyItem(int index);
+		static void hideItemsMenu();
+	};
 };
