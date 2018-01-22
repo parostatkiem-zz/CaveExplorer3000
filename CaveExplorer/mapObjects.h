@@ -1,8 +1,7 @@
 #pragma once
-#include "config.h"
 #include<iostream>
+#include "config.h"
 using namespace std;
-
 
 class mapObject
 {
@@ -102,20 +101,9 @@ public:
 
 	void flushItems();
 
-	shop()
-	{
-		//ustawienie domyœlnych przedmiotów nastepuje tutaj
-		items.push_back(*(new shopItem(0, "Miecz", "DMG")));
-		items.push_back(*(new shopItem(0, "Topor", "DMG")));
-		items.push_back(*(new shopItem(0, "Maczuga", "DMG")));
-
-		items.push_back(*(new shopItem(1, "Tarcza", "HP")));
-		items.push_back(*(new shopItem(1, "Zbroja", "HP")));
-		items.push_back(*(new shopItem(1, "Helm", "HP")));
-
-		flushItems();
-	}
-
+	shop();
+	
+	void fillShop();
 	void buyItem(int index);
 	
 };

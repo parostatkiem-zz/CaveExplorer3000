@@ -633,6 +633,12 @@ void shop::flushItems()
 	
 }
 
+shop::shop()
+{
+	//fillShop();
+}
+
+
 //GRACZ
 void playerClass::Atack()
 {
@@ -745,6 +751,19 @@ void map::CheckShop() //sprawdza, czy gracz nie  wszedl w portal
 		//map::InitializeLevel(++TheGameEngine.CurrentLevel);
 		console::shopGUI::showItemsMenu();
 	}
+}
+
+void shop::fillShop(){
+	//ustawienie domyœlnych przedmiotów nastepuje tutaj
+	items.push_back(*(new shopItem(0, gameLang.findKey("Shop_Item_Sword"), gameLang.findKey("Dmg"))));
+	items.push_back(*(new shopItem(0, gameLang.findKey("Shop_Item_Axe"), gameLang.findKey("Dmg"))));
+	items.push_back(*(new shopItem(0, gameLang.findKey("Shop_Item_Bludgeon"), gameLang.findKey("Dmg"))));
+
+	items.push_back(*(new shopItem(1, gameLang.findKey("Shop_Item_Shield"), gameLang.findKey("Hp"))));
+	items.push_back(*(new shopItem(1, gameLang.findKey("Shop_Item_Armor"), gameLang.findKey("Hp"))));
+	items.push_back(*(new shopItem(1, gameLang.findKey("Shop_Item_Helmet"), gameLang.findKey("Hp"))));
+
+	flushItems();
 }
 
 void shop::buyItem(int index)
